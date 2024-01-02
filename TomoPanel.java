@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 public class TomoPanel extends JPanel implements Runnable, KeyListener {
 	// dimensions of window
-	public static final int GAME_WIDTH = 1200;
-	public static final int GAME_HEIGHT = 650;
+	public static final int PANEL_WIDTH = 1200;
+	public static final int PANEL_HEIGHT = 650;
 	
 	public Thread panelThread;
 	public Image image;
@@ -26,7 +26,7 @@ public class TomoPanel extends JPanel implements Runnable, KeyListener {
 		this.addKeyListener(this); // start listening for keyboard input
 
 		// set the size of this panel
-		this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
 		// make this class run at the same time as other classes
 		panelThread = new Thread(this);
@@ -35,7 +35,7 @@ public class TomoPanel extends JPanel implements Runnable, KeyListener {
 	
 	public void paint(Graphics g) {
 		// draws images off screen to move on screen later
-		image = createImage(GAME_WIDTH, GAME_HEIGHT); // draw off screen
+		image = createImage(PANEL_WIDTH, PANEL_HEIGHT); // draw off screen
 		graphics = image.getGraphics();
 		draw(graphics);// update the positions of everything on the screen
 		g.drawImage(image, 0, 0, this); // move the image on the screen
