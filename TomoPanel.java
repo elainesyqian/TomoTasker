@@ -3,15 +3,13 @@
  * write more stuff later lol
  */
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
-public class TomoPanel extends JPanel implements Runnable, KeyListener {
+public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 	// dimensions of window
 	public static final int PANEL_WIDTH = 1200;
 	public static final int PANEL_HEIGHT = 650;
@@ -20,7 +18,11 @@ public class TomoPanel extends JPanel implements Runnable, KeyListener {
 	public Image image;
 	public Graphics graphics;
 	
-	public TomoPanel() {
+	public JButton b;
+	
+	public TomoMenu menu;
+	
+	public TomoPanel(Container c) {
 
 		this.setFocusable(true); // make everything in this class appear on the screen
 		this.addKeyListener(this); // start listening for keyboard input
@@ -31,6 +33,10 @@ public class TomoPanel extends JPanel implements Runnable, KeyListener {
 		// make this class run at the same time as other classes
 		panelThread = new Thread(this);
 		panelThread.start();
+		
+		menu = new TomoMenu(c);
+		
+		this.add(menu, 9);
 	}
 	
 	public void paint(Graphics g) {
@@ -44,6 +50,7 @@ public class TomoPanel extends JPanel implements Runnable, KeyListener {
 	
 	public void draw(Graphics g) {
 		// deal with this later ig (once we actucally make the other classes for the things we want to draw)
+		menu.draw(g);
 	}
 	
 	// also deal with this keys stuff later vvvvvvvvvvvvvvvv
