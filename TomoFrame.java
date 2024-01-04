@@ -9,12 +9,18 @@ import javax.swing.*;
 public class TomoFrame extends JFrame{
 
 	TomoPanel panel;
+	Container c;
 	
 	public TomoFrame() {
-		panel = new TomoPanel(); // run TomoPanel constructor
+		c = getContentPane();
+		c.setLayout(new BorderLayout());
+		
+		panel = new TomoPanel(c); // run TomoPanel constructor
+		
 		this.add(panel);
+		
 		this.setTitle("TOMOTASKER"); // set title for frame
-		this.setResizable(false); // frame can't change size
+		//this.setResizable(false); // frame can't change size
 		this.setBackground(Color.white); // sets background color for the frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // X button will stop program execution
 		this.pack();// makes components fit in window
