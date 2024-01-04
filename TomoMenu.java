@@ -60,7 +60,7 @@ public class TomoMenu extends JPanel implements ActionListener{
 		// TODO add an "if it's a new day" checker before generating index
 		// also if more quotes are added change multiplier
 		
-		todaysQuoteIndex = (int)((Math.random()*(6)));
+		todaysQuoteIndex = (int)((Math.random()*(4)));
 	}
     
 	public void draw(Graphics g) {
