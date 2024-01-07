@@ -22,7 +22,7 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 	
 	public TomoMenu menu;
 	
-	public TomoPanel(Container c) {
+	public TomoPanel(Container c, TomoFrame frame) {
 
 		this.setFocusable(true); // make everything in this class appear on the screen
 		this.addKeyListener(this); // start listening for keyboard input
@@ -34,7 +34,7 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 		panelThread = new Thread(this);
 		panelThread.start();
 		
-		menu = new TomoMenu(c);
+		menu = new TomoMenu(c, frame);
 		
 		this.add(menu, 9);
 	}
