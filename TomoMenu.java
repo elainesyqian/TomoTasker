@@ -23,10 +23,12 @@ public class TomoMenu extends JPanel implements ActionListener{
 	int currentBg;
 	
 	public Container c;
+	public TomoFrame frame;
 	
-	public TomoMenu(Container c) {
+	public TomoMenu(Container c, TomoFrame frame) {
 		//super(850, 50, MENU_WIDTH, MENU_HEIGHT);
 		this.c = c;
+		this.frame = frame;
 		
 		currentBg = 0;
 		
@@ -75,13 +77,13 @@ public class TomoMenu extends JPanel implements ActionListener{
 		if(currentBg == 0) {
 			g.drawString("BLANK FRAME OF AN INCOMPLETE PROJECT", 875, 300);
 		} else if (currentBg == 1) {
-			g.drawString("BLEACHED EGG SHELLS", 875, 300);
+			g.drawString("BLINDING BLUE", 875, 300);
 		} else if (currentBg == 2) {
-			g.drawString("POLAR BEAR IN SNOWSTORM", 875, 300);
+			g.drawString("GREENSCREEN", 875, 300);
 		} else if (currentBg == 3) {
-			g.drawString("PRINTER PAPER", 875, 300);
+			g.drawString("IT'S NOT PURPLE", 875, 300);
 		} else if (currentBg == 4) {
-			g.drawString("CLOSEUP OF A CLOUD", 875, 300);
+			g.drawString("CLOSEUP OF AN APPLE", 875, 300);
 		} 
 		
 		g.drawString("DAILY QUOTE:", 875, 400);
@@ -96,14 +98,19 @@ public class TomoMenu extends JPanel implements ActionListener{
 			System.out.println("3...2...1... suprise! there's no timer yet");
 		} else if (evt.getSource() == backGroundButtons[0]) {
 			currentBg = 0;
+			frame.frameBgChange(Color.white);
 		} else if (evt.getSource() == backGroundButtons[1]) {
 			currentBg = 1;
+			frame.frameBgChange(Color.blue);
 		} else if (evt.getSource() == backGroundButtons[2]) {
 			currentBg = 2;
+			frame.frameBgChange(Color.green);
 		} else if (evt.getSource() == backGroundButtons[3]) {
 			currentBg = 3;
+			frame.frameBgChange(Color.magenta);
 		} else if (evt.getSource() == backGroundButtons[4]) {
 			currentBg = 4;
+			frame.frameBgChange(Color.red);
 		}
 		
 	    repaint(); //update screen to show changes
