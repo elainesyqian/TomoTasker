@@ -21,6 +21,7 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 	public JButton b;
 	
 	public TomoMenu menu;
+	public Pomodoro timer;
 	
 	public TomoPanel(Container c, TomoFrame frame) {
 
@@ -35,8 +36,10 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 		panelThread.start();
 		
 		menu = new TomoMenu(c, frame);
+		timer = new Pomodoro(c);
 		
 		this.add(menu, 9);
+		this.add(timer, 9);
 	}
 	
 	public void paint(Graphics g) {
@@ -51,6 +54,7 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 	public void draw(Graphics g) {
 		// deal with this later ig (once we actucally make the other classes for the things we want to draw)
 		menu.draw(g);
+		timer.draw(g);
 	}
 	
 	// also deal with this keys stuff later vvvvvvvvvvvvvvvv
