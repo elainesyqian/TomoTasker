@@ -38,7 +38,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public static long initial;
 	public long remaining;
 
-	public boolean play;
+	public boolean play, wt, lb, sb = false;
 
 	public Pomodoro(Container c) {
 		this.c = c;
@@ -46,6 +46,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 		min = 40;
 		sec = 0;
+		wt = true;
 
 		initial = System.currentTimeMillis();
 
@@ -83,6 +84,8 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 		startTimer.addActionListener(this);
 		pauseTimer.addActionListener(this);
+		resetTimer.addActionListener(this);
+		
 		changeAlert.addActionListener(this);
 
 		workTime.addActionListener(this);
@@ -95,11 +98,11 @@ public class Pomodoro extends JPanel implements ActionListener {
 		g.drawRect(POMO_X, POMO_Y, POMO_WIDTH, POMO_HEIGHT);
 
 		g.setColor(Color.pink);
-		g.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+		g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
 		if (sec < 10) {
-			g.drawString(min + ":0" + sec, 200, 150);
+			g.drawString(min + ":0" + sec, 190, 170);
 		} else {
-			g.drawString(min + ":" + sec, 200, 150);
+			g.drawString(min + ":" + sec, 190, 170);
 		}
 		if (play && System.currentTimeMillis() - initial >= 1000 && (min > 0 || sec > 0)) {
 			initial = System.currentTimeMillis();
@@ -119,19 +122,45 @@ public class Pomodoro extends JPanel implements ActionListener {
 		} else if (evt.getSource() == pauseTimer) {
 			play = false;
 		} else if (evt.getSource() == resetTimer) {
-			// figure this out later
+			//idk why ths doesnt work, it doesnt seem to register when its clicked
+			if (wt) {
+				min = 40;
+			} else if (sb) {
+				min = 5;
+			} else if (lb) {
+				min = 15;
+			}
+			System.out.print("test");
+			sec = 0;
+			play = false;
 		} else if (evt.getSource() == workTime) {
 			min = 40;
 			sec = 0;
+			
+			wt= true;
+			sb = false;
+			lb = false;
+			
 			play = false;
 		} else if (evt.getSource() == shortBreak) {
 			min = 5;
 			sec = 0;
+			
+			wt= false;
+			sb = true;
+			lb = false;
+			
 			play = false;
 		} else if (evt.getSource() == longBreak) {
 			min = 15;
 			sec = 0;
+			
+			wt= false;
+			sb = false;
+			lb = true;
+			
 			play = false;
+			
 		}
 
 		repaint();
