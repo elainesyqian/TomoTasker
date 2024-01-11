@@ -10,7 +10,7 @@ import java.awt.*;
 public class DateTimeDisplay {
 	
 	//variable declarations
-	String date;
+	String currentDate;
 	String formattedDate;
 	String formattedTime;
 	
@@ -20,11 +20,11 @@ public class DateTimeDisplay {
 		//variable initializations
 		
 		//set new date using java system's current time
-		date = new java.util.Date(System.currentTimeMillis()) + "";
+		currentDate = new java.util.Date(System.currentTimeMillis()) + "";
 		
 		//get the formatted date and time
-		formattedDate = date.substring(0,10) +","+ date.substring(23,28);
-		formattedTime = date.substring(11, 16)+date.substring(19, 23);
+		formattedDate = currentDate.substring(0,10) +","+ currentDate.substring(23,28);
+		formattedTime = currentDate.substring(11, 16)+currentDate.substring(19, 23);
 	}
 	
 	//this method takes care of drawing the date and time to screen
@@ -39,9 +39,9 @@ public class DateTimeDisplay {
 		g.drawString(formattedTime, 1050, 30);
 
 		//updates the necessary information
-		date = new java.util.Date(System.currentTimeMillis()) + "";
-		formattedDate = date.substring(0,10) +","+ date.substring(23,28);
-		formattedTime = date.substring(11, 16)+date.substring(19, 23);
+		currentDate = new java.util.Date(System.currentTimeMillis()) + "";
+		formattedDate = currentDate.substring(0,10) +","+ currentDate.substring(23,28);
+		formattedTime = currentDate.substring(11, 16)+currentDate.substring(19, 23);
 	}
 	
 }

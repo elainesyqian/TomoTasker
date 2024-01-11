@@ -22,13 +22,13 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public static int pomoY = 100;
 
 	//buttons
-	JButton startTimer;
-	JButton pauseTimer;
-	JButton resetTimer;
-	JButton changeAlert;
-	JButton workTime;
-	JButton shortBreak;
-	JButton longBreak;
+	public JButton startTimer;
+	public JButton pauseTimer;
+	public JButton resetTimer;
+	public JButton changeAlert;
+	public JButton workTime;
+	public JButton shortBreak;
+	public JButton longBreak;
 
 	//other variable declarations
 	public Container c;
@@ -40,13 +40,12 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public long remaining;
 
 	public boolean play, wt, lb, sb, playedAlert = false;
-
+	
+	public boolean mouseDragging;
 	public int firstMouseX;
 	public int firstMouseY;
 	public int firstPomoX;
 	public int firstPomoY;
-	
-	public boolean mouseDragging;
 	
 	//constructor
 	public Pomodoro(Container c) {
@@ -235,7 +234,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			lb = true;
 		}
 
-		repaint();
+		repaint(); // updates screen to show changes
 	}
 
 	// this method plays audio
@@ -262,25 +261,38 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 	}
 
+	// called from TomoPanel when the mouse is pressed
+	// saves the x and y values of the mouse press and timer
 	public void mousePressed(MouseEvent e) {
+		// gets the x and y of the mouse and list when the mouse is pressed
 		firstMouseX = e.getX();
 		firstMouseY = e.getY();
 		firstPomoX = pomoX;
 		firstPomoY = pomoY;
 	}
 
+	// called from TomoPanel when the mouse is dragged
+	// and uses the x and y values at the original click
+	// to see if the timer should be dragged
 	public void mouseDragged(MouseEvent e) {
+		
+		// checks if the x and y values of the mouse fall within the draggable title tab when the mouse
+		// was first pressed down
 		if (firstMouseX >= firstPomoX && firstMouseX <= firstPomoX + POMO_WIDTH && firstMouseY >= firstPomoY
 				&& firstMouseY <= firstPomoY + 30) {
+			// if the mouse was in the title tab, allow for the list to be dragged
 			mouseDragging = true;
 		} else {
+			// otherwise, don't drag the list
 			mouseDragging = false;
 		}
 
 		if (mouseDragging) {
+			// if the timer is currently being dragged, make it follow the mouse
 			pomoX = e.getX() - (firstMouseX - firstPomoX);
 			pomoY = e.getY() - (firstMouseY - firstPomoY);
 			
+			// if the mouse drags the title tab offscreen, move it back onscreen
 			 if (pomoX < 0) { 
 				 pomoX = 0;
 			  } else if (pomoX > TomoPanel.PANEL_WIDTH  - POMO_WIDTH) {
@@ -293,7 +305,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 				  pomoY = TomoPanel.PANEL_HEIGHT - 30;
 			  }
 			
-			repaint();
+			repaint(); // updates screen to show changes
 		}
 	}
 
