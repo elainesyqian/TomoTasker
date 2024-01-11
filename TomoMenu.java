@@ -70,8 +70,6 @@ public class TomoMenu extends JPanel implements ActionListener{
 		// draws the rectangle
 		g.drawRect(850, 50, MENU_WIDTH, MENU_HEIGHT);
 		
-		g.drawRect(70, 50, 10, 10);
-		
 		g.drawString("CURRENT ROOM:", 875, 275);
 		
 		if(currentBg == 0) {
