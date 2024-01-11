@@ -4,8 +4,7 @@
  */
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -21,6 +20,7 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 	public JButton b;
 	
 	public TomoMenu menu;
+	public Tasklist list;
 	public Pomodoro timer;
 	public DateTimeDisplay date;
 	
@@ -37,11 +37,25 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 		panelThread.start();
 		
 		menu = new TomoMenu(c, frame);
+		list = new Tasklist(c, frame);
 		timer = new Pomodoro(c);
 		date = new DateTimeDisplay();
 		
 		this.add(menu, 9);
+		this.add(list, 10);
 		this.add(timer, 9);
+		
+	    addMouseListener(new MouseAdapter() {
+	    		public void mousePressed(MouseEvent e) {
+	    			list.mousePressed(e);
+	    		}
+			});
+	    
+	    addMouseMotionListener(new MouseAdapter() {
+	    		public void mouseDragged(MouseEvent e) {
+	    			list.mouseDragged(e);
+	    		}
+	    });
 	}
 	
 	public void paint(Graphics g) {
@@ -56,6 +70,7 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 	public void draw(Graphics g) {
 		// deal with this later ig (once we actucally make the other classes for the things we want to draw)
 		menu.draw(g);
+		list.draw(g);
 		timer.draw(g);
 		date.draw(g);
 	}
