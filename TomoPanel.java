@@ -48,12 +48,14 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 	    addMouseListener(new MouseAdapter() {
 	    		public void mousePressed(MouseEvent e) {
 	    			list.mousePressed(e);
+	    			timer.mousePressed(e);
 	    		}
 			});
 	    
 	    addMouseMotionListener(new MouseAdapter() {
 	    		public void mouseDragged(MouseEvent e) {
 	    			list.mouseDragged(e);
+	    			timer.mouseDragged(e);
 	    		}
 	    });
 	}
