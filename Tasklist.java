@@ -108,14 +108,14 @@ public class Tasklist extends JPanel implements ActionListener{
 			  
 			  if (listX < 0) { 
 				  listX = 0;
-			  } else if (listX > 1200  - MENU_WIDTH) {
-				  listX = 1200 - MENU_WIDTH;
+			  } else if (listX > TomoPanel.PANEL_WIDTH  - MENU_WIDTH) {
+				  listX = TomoPanel.PANEL_WIDTH - MENU_WIDTH;
 			  }
 			  
 			  if (listY < 0) {
 				  listY = 0;
-			  } else if (listY + 30 > 650) {
-				  listY = 620;
+			  } else if (listY + 30 > TomoPanel.PANEL_HEIGHT) {
+				  listY = TomoPanel.PANEL_HEIGHT - 30;
 			  }
 
 			  repaint();

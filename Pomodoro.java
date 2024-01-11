@@ -261,6 +261,19 @@ public class Pomodoro extends JPanel implements ActionListener {
 		if (mouseDragging) {
 			pomoX = e.getX() - (firstMouseX - firstPomoX);
 			pomoY = e.getY() - (firstMouseY - firstPomoY);
+			
+			 if (pomoX < 0) { 
+				 pomoX = 0;
+			  } else if (pomoX > TomoPanel.PANEL_WIDTH  - POMO_WIDTH) {
+				  pomoX = TomoPanel.PANEL_WIDTH - POMO_WIDTH;
+			  }
+			  
+			  if (pomoY < 0) {
+				  pomoY = 0;
+			  } else if (pomoY + 30 > TomoPanel.PANEL_HEIGHT) {
+				  pomoY = TomoPanel.PANEL_HEIGHT - 30;
+			  }
+			
 			repaint();
 		}
 	}
