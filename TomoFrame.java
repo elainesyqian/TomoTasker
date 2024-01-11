@@ -35,7 +35,7 @@ public class TomoFrame extends JFrame{
 	// method that changes the background colour of the frame
 	// it takes in a Color, and changes it's background to it
 	public void frameBgChange(Color color) {
-		// sets the background color to the given color
+		// sets the background colour to the given colour
 		this.setBackground(color);
 	}
 	
