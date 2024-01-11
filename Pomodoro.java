@@ -1,31 +1,27 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
+/* Elaine Qian and Shiloh ZHeng
+ * January 11nd, 2024
+ * TomoPanel
+ * This class handles all aspects of the Pomodoro timer feature
+*/
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
+//import statements
+import java.awt.*;
 import java.awt.event.*;
-
-import javax.swing.Timer;
-
-//import java.util.TimerTask;
+import java.io.File;
+import javax.sound.sampled.*;
+import javax.swing.*;
 
 public class Pomodoro extends JPanel implements ActionListener {
 
+	//sizing of the timer
 	public static final int POMO_WIDTH = 350;
 	public static final int POMO_HEIGHT = 180;
 
+	//x and y coordinates of the timer
 	public static int pomoX = 100;
 	public static int pomoY = 100;
 
+	//buttons
 	JButton startTimer;
 	JButton pauseTimer;
 	JButton resetTimer;
@@ -34,15 +30,13 @@ public class Pomodoro extends JPanel implements ActionListener {
 	JButton shortBreak;
 	JButton longBreak;
 
+	//other variable declarations
 	public Container c;
 	public static int timerVis;
 
-	// kinda dont need thsi but wtv
-	public static Timer timer;
+	public int min, sec;
 
-	public static int min, sec;
-
-	public static long initial;
+	public long initial;
 	public long remaining;
 
 	public boolean play, wt, lb, sb, playedAlert = false;
@@ -54,60 +48,64 @@ public class Pomodoro extends JPanel implements ActionListener {
 	
 	public boolean mouseDragging;
 	
+	//constructor
 	public Pomodoro(Container c) {
+		//setup
 		this.c = c;
-		// t = new Timer();
 
+		//starting timer values
 		min = 40;
 		sec = 0;
 		wt = true;
 
-		initial = System.currentTimeMillis();
-
-		play = false;
 		timerVis = -1;
 
+		//buttons setup
+		//initializing
 		startTimer = new JButton("START");
 		pauseTimer = new JButton("PAUSE");
 		resetTimer = new JButton("RESET");
 		changeAlert = new JButton("change alert");
-
 		workTime = new JButton("work timer");
 		shortBreak = new JButton("short break");
 		longBreak = new JButton("long break");
 
+		//adding to screen
 		c.add(startTimer);
 		c.add(pauseTimer);
 		c.add(resetTimer);
-
 		c.add(changeAlert);
-
 		c.add(workTime);
 		c.add(shortBreak);
 		c.add(longBreak);
 
+		//adding actionListiner to know when clicked
 		startTimer.addActionListener(this);
 		pauseTimer.addActionListener(this);
 		resetTimer.addActionListener(this);
-
 		changeAlert.addActionListener(this);
-
 		workTime.addActionListener(this);
 		shortBreak.addActionListener(this);
 		longBreak.addActionListener(this);
 
 	}
 
+	//this method takes care of all things drawn to the screen and keeping track of time
 	public void draw(Graphics g) {
 
+		//if the timer is open or 'visible'
 		if (timerVis == 1) {
+			//draws general rectangle outline
 			g.drawRect(pomoX, pomoY, POMO_WIDTH, POMO_HEIGHT);
+			
+			//draws the title bar and background
 			g.setColor(Color.PINK);
 			g.fillRect(pomoX, pomoY, POMO_WIDTH, 30);
 			g.setColor(Color.black);
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 			g.drawString("TIMER", pomoX+20, pomoY+20);
 			
+			//set buttons to be visible and their location
 			startTimer.setVisible(true);
 			startTimer.setBounds(pomoX + 5, pomoY + 40, 75, 30);
 			
@@ -129,32 +127,47 @@ public class Pomodoro extends JPanel implements ActionListener {
 			longBreak.setVisible(true);
 			longBreak.setBounds(pomoX + 240, pomoY + 95, 100, 30);
 
+			//sets colour for timer text
 			g.setColor(Color.pink);
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
 
+			//draws the time left
 			if (sec < 10) {
-				g.drawString(min + ":0" + sec, pomoX+90, pomoY+100);
+				g.drawString(min + ":0" + sec, pomoX+90, pomoY+100);	
 			} else {
 				g.drawString(min + ":" + sec, pomoX+90, pomoY+100);
 			}
 
+			//if timer has finished and has not played the alert yet
 			if (sec == 0 && min == 0 && !playedAlert) {
+				//set play to false so no negative numbers
 				play = false;
-				playSFX("alert1.wav");
 				g.drawString("0:00", 190, 170);
 				repaint();
+				
+				//play alert
+				playSFX("alert1.wav");
 				playedAlert = true;
 			}
 
+			//keeps track of time left
+			//if the timer is on play mode and 1 second has passed
 			if (play && System.currentTimeMillis() - initial >= 1000 && (min > 0 || sec > 0)) {
 				initial = System.currentTimeMillis();
+				//decrease seconds variable by 1 for the 1 second passed
 				sec--;
+				
+				//if seconds was 0 and decreases to -1
 				if (sec < 0) {
+					//set seconds to 59 and decrease minutes by 1
 					sec = 59;
 					min--;
 				}
 			}
+		//if timer is closed and not visible
 		} else {
+			
+			//set all buttons' visibility and play to false
 			startTimer.setVisible(false);
 			pauseTimer.setVisible(false);
 			resetTimer.setVisible(false);
@@ -162,21 +175,25 @@ public class Pomodoro extends JPanel implements ActionListener {
 			workTime.setVisible(false);
 			shortBreak.setVisible(false);
 			longBreak.setVisible(false);
-
 			play = false;
 		}
 
 	}
-
+	
+	//this method takes care all logistics when a button is clicked
 	public void actionPerformed(ActionEvent evt) {
 
+		//if start button is clicked set play to true and played Alert to false
 		if (evt.getSource() == startTimer) {
 			play = true;
 			playedAlert = false;
+			
+		//set play to false if timer is paused
 		} else if (evt.getSource() == pauseTimer) {
 			play = false;
+		
+		//if reset button is clicked set play to false, sec to 0, and min to respective values based on which timer was last used
 		} else if (evt.getSource() == resetTimer) {
-			// idk why ths doesnt work, it doesnt seem to register when its clicked
 			if (wt) {
 				min = 40;
 			} else if (sb) {
@@ -184,10 +201,12 @@ public class Pomodoro extends JPanel implements ActionListener {
 			} else if (lb) {
 				min = 15;
 			}
-			System.out.print("test");
 			sec = 0;
 			play = false;
+		
+		//if work time is clicked, then set time to respective values and wt to true and other booleans to false
 		} else if (evt.getSource() == workTime) {
+			play = false;
 			min = 40;
 			sec = 0;
 
@@ -195,37 +214,37 @@ public class Pomodoro extends JPanel implements ActionListener {
 			sb = false;
 			lb = false;
 
-			play = false;
+		//if short break is clicked, then set time to respective values and sb to true and other booleans to false
 		} else if (evt.getSource() == shortBreak) {
-			min = 0;
-			sec = 10;
+			play = false;
+			min = 5;
+			sec = 0;
 
 			wt = false;
 			sb = true;
 			lb = false;
-
-			play = false;
+			
+			//if long break is clicked, then set time to respective values and lb to true and other booleans to false
 		} else if (evt.getSource() == longBreak) {
+			play = false;
 			min = 15;
 			sec = 0;
 
 			wt = false;
 			sb = false;
 			lb = true;
-
-			play = false;
-
 		}
 
 		repaint();
 	}
 
-	// plays sound effects
+	// this method plays audio
 	public static void playSFX(String fileName) {
 
 		// try-catch to prevent crashing
 		try {
 
+			//setup code to open the file
 			File songClip = new File(fileName);
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(songClip);
 			Clip clip = AudioSystem.getClip();
