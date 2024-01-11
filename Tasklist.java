@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class Tasklist extends JPanel implements ActionListener{
 	public static final int MENU_WIDTH = 350;
-	public int menu_height = 60;
+	public int menu_height = 85;
 	
 	public int listX = 100;
 	public int listY = 270;
@@ -39,10 +39,10 @@ public class Tasklist extends JPanel implements ActionListener{
 		
 		addTask.addActionListener(this);
 		
-		tasks.add(new JTextField("hi", 20));
+		tasks.add(new JTextField("default task", 20));
 		
 		c.add(tasks.get(0));
-		tasks.get(0).setBounds(listX + 5,listY + taskMoveDown, 100, 10);
+		tasks.get(0).setBounds(listX + 5,listY + taskMoveDown, 200, 15);
 	}
 	
 	public void draw(Graphics g) {
@@ -63,7 +63,7 @@ public class Tasklist extends JPanel implements ActionListener{
 	public void drawTasks() {
 		taskMoveDown = 20;
 		for (int i = 0; i < tasks.size(); i++) {
-			tasks.get(i).setBounds(listX + 5,listY + 25 + taskMoveDown, 100, 10);
+			tasks.get(i).setBounds(listX + 5,listY + 25 + taskMoveDown, 200, 20);
 			taskMoveDown = taskMoveDown + 20;
 		}
 		
@@ -114,7 +114,7 @@ public class Tasklist extends JPanel implements ActionListener{
 				tasks.add(newTask);
 				c.add(newTask, 0);
 				
-				menu_height = 60 + tasks.size()*20;
+				menu_height = 65 + tasks.size()*20;
 				/*
 				for (int i = 0; i < tasks.size(); i++) {
 					c.add(tasks.get(i));
