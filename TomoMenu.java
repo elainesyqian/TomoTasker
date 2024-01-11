@@ -86,7 +86,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		todaysQuoteIndex = (int) ((Math.random() * (4)));
 	}
 
-	// draws the text that is part of the menu
+	// draws parts of the menu
 	public void draw(Graphics g) {
 
 		// draws the rectangle border of the menu
