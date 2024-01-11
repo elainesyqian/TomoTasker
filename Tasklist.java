@@ -87,6 +87,19 @@ public class Tasklist extends JPanel implements ActionListener{
 		  if (mouseDragging) {
 			  listX = e.getX() - (firstMouseX - firstListX);
 			  listY = e.getY() - (firstMouseY - firstListY);
+			  
+			  if (listX < 0) { 
+				  listX = 0;
+			  } else if (listX > 1200  - MENU_WIDTH) {
+				  listX = 1200 - MENU_WIDTH;
+			  }
+			  
+			  if (listY < 0) {
+				  listY = 0;
+			  } else if (listY + 30 > 650) {
+				  listY = 620;
+			  }
+
 			  repaint();
 		  }
 	  }
@@ -99,7 +112,7 @@ public class Tasklist extends JPanel implements ActionListener{
 				
 				newTask = new JTextField("add your task here!", 10);
 				tasks.add(newTask);
-				c.add(newTask);
+				c.add(newTask, 0);
 				
 				menu_height = 60 + tasks.size()*20;
 				/*
