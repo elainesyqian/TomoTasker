@@ -28,43 +28,61 @@ public class Tasklist extends JPanel implements ActionListener{
 	
 	public int taskMoveDown = 20;
 	
+	public static int taskVis;
+	
 	public Tasklist(Container c, TomoFrame frame) {
 		//super(850, 50, MENU_WIDTH, MENU_HEIGHT);
 		this.c = c;
 		this.frame = frame;
 		
 		addTask = new JButton("+");
-		
 		c.add(addTask);
-		
 		addTask.addActionListener(this);
 		
 		tasks.add(new JTextField("default task", 20));
 		
 		c.add(tasks.get(0));
 		tasks.get(0).setBounds(listX + 5,listY + taskMoveDown, 200, 15);
+		
+		taskVis = -1;
 	}
 	
 	public void draw(Graphics g) {
-		// draws the rectangle
-		g.drawRect(listX, listY, MENU_WIDTH, menu_height);
-		g.setColor(Color.PINK);
-		g.fillRect(listX, listY, MENU_WIDTH, 30);
 		
-		// adds the TODO title text
-		g.setColor(Color.BLACK);
-		g.drawString("TO DO", listX + 10, listY + 15);
-		
-		addTask.setBounds(listX + MENU_WIDTH - 25,listY + 35,20,20);
-		
-		drawTasks();
+		if (taskVis == 1) {
+			// draws the rectangle
+			g.drawRect(listX, listY, MENU_WIDTH, menu_height);
+			g.setColor(Color.PINK);
+			g.fillRect(listX, listY, MENU_WIDTH, 30);
+			
+			addTask.setVisible(true);
+			
+			// adds the TODO title text
+			g.setColor(Color.BLACK);
+			g.drawString("TO DO", listX + 10, listY + 15);
+			
+			addTask.setBounds(listX + MENU_WIDTH - 25,listY + 35,20,20);
+			
+			drawTasks();
+		} else {
+			addTask.setVisible(false);
+			drawTasks();
+		}
+
 	}
 	
 	public void drawTasks() {
 		taskMoveDown = 20;
 		for (int i = 0; i < tasks.size(); i++) {
-			tasks.get(i).setBounds(listX + 5,listY + 25 + taskMoveDown, 200, 20);
-			taskMoveDown = taskMoveDown + 20;
+			
+			if (taskVis == 1) {
+				tasks.get(i).setVisible(true);
+				tasks.get(i).setBounds(listX + 5,listY + 25 + taskMoveDown, 200, 20);
+				taskMoveDown = taskMoveDown + 20;
+			} else {
+				tasks.get(i).setVisible(false);
+			}
+		
 		}
 		
 	}

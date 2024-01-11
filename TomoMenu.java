@@ -94,6 +94,8 @@ public class TomoMenu extends JPanel implements ActionListener{
 		
 		if (evt.getSource() == timerButton) {
 			Pomodoro.timerVis = Pomodoro.timerVis * -1;
+		} else if (evt.getSource() == checkListButton) {
+			Tasklist.taskVis = Tasklist.taskVis * -1;
 		} else if (evt.getSource() == backGroundButtons[0]) {
 			currentBg = 0;
 			frame.frameBgChange(Color.white);
