@@ -1,5 +1,5 @@
-/* Elaine Qian and Shiloh ZHeng
- * January 2nd, 2024
+/* Elaine Qian and Shiloh Zheng
+ * January 12th, 2024
  * TomoPanel
  * This class creates the main program loop, constantly running the program and calling all its methods.
  * The main sections of the program include the Pomodoro timer, the tasklist, the control menu, the streak counter, and stickynotes (yet to be implemented)
