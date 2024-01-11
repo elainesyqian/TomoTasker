@@ -1,33 +1,35 @@
-/* Elaine Qian and Shiloh Zheng
- * TomoTasker
- * write more stuff later lol
- */
+/* Elaine Qian and Shiloh ZHeng
+ * January 2nd, 2024
+ * TomoPanel
+ * This class creates the main program loop, constantly running the program and calling all its methods.
+ * The main sections of the program include the Pomodoro timer, the tasklist, the control menu, the streak counter, and stickynotes (yet to be implemented)
+*/
 
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 
-public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
+public class TomoPanel extends JLayeredPane implements Runnable {
 	// dimensions of window
 	public static final int PANEL_WIDTH = 1200;
 	public static final int PANEL_HEIGHT = 650;
-	
+
 	public Thread panelThread;
 	public Image image;
 	public Graphics graphics;
-	
+
 	public JButton b;
-	
+
 	public TomoMenu menu;
 	public Tasklist list;
 	public Pomodoro timer;
 	public DateTimeDisplay date;
-	
-	public TomoPanel(Container c, TomoFrame frame) {
 
+	public TomoPanel(Container c, TomoFrame frame) {
+		// constructor for this class
+		
 		this.setFocusable(true); // make everything in this class appear on the screen
-		this.addKeyListener(this); // start listening for keyboard input
 
 		// set the size of this panel
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -35,66 +37,55 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 		// make this class run at the same time as other classes
 		panelThread = new Thread(this);
 		panelThread.start();
-		
+
+		// creates the other objects in the TomoTasker
 		menu = new TomoMenu(c, frame);
 		list = new Tasklist(c, frame);
 		timer = new Pomodoro(c);
 		date = new DateTimeDisplay();
-		
+
+		// adds the other objects to this panel
 		this.add(menu, 9);
 		this.add(list, 10);
 		this.add(timer, 9);
-		
-	    addMouseListener(new MouseAdapter() {
-	    		public void mousePressed(MouseEvent e) {
-	    			list.mousePressed(e);
-	    			timer.mousePressed(e);
-	    		}
-			});
-	    
-	    addMouseMotionListener(new MouseAdapter() {
-	    		public void mouseDragged(MouseEvent e) {
-	    			list.mouseDragged(e);
-	    			timer.mouseDragged(e);
-	    		}
-	    });
+
+		// starts listening for mouse input
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				// if the mouse is pressed, run functions in the list and timer
+				list.mousePressed(e);
+				timer.mousePressed(e);
+			}
+		});
+
+		// starts listening for mouse motion events
+		addMouseMotionListener(new MouseAdapter() {
+			// if the mouse is dragged, run functions in the list and timer
+			public void mouseDragged(MouseEvent e) {
+				list.mouseDragged(e);
+				timer.mouseDragged(e);
+			}
+		});
 	}
-	
+
+	// draws images off screen to move on screen later
 	public void paint(Graphics g) {
-		// draws images off screen to move on screen later
 		image = createImage(PANEL_WIDTH, PANEL_HEIGHT); // draw off screen
 		graphics = image.getGraphics();
 		draw(graphics);// update the positions of everything on the screen
 		g.drawImage(image, 0, 0, this); // move the image on the screen
 
 	}
-	
+
+	// calls draw method in the other classes
 	public void draw(Graphics g) {
-		// deal with this later ig (once we actucally make the other classes for the things we want to draw)
 		menu.draw(g);
 		list.draw(g);
 		timer.draw(g);
 		date.draw(g);
 	}
-	
-	// also deal with this keys stuff later vvvvvvvvvvvvvvvv
-	
-	// checks if a key is pressed
-	public void keyPressed(KeyEvent e) {
-			
-	}
 
-	// checks if a key is released
-	public void keyReleased(KeyEvent e) {
-
-	}
-
-	// left empty because we don't need it, but it is required to be overridded by
-	// the KeyListener interface
-	public void keyTyped(KeyEvent e) {
-
-	}
-	
+	// makes the program continue endlessly, constantly updating the screen
 	public void run() {
 		// forces computer to slow down in calling methods
 		long lastTime = System.nanoTime();
@@ -108,7 +99,7 @@ public class TomoPanel extends JLayeredPane implements Runnable, KeyListener {
 			delta = delta + (now - lastTime) / ns;
 			lastTime = now;
 
-			// only move objects around and update screen if enough time has passed
+			// only update screen if enough time has passed
 			if (delta >= 1) {
 				repaint();
 				delta--;
