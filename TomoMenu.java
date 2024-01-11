@@ -95,7 +95,7 @@ public class TomoMenu extends JPanel implements ActionListener{
 		// TODO set up all buttons reactions to being clicked
 		
 		if (evt.getSource() == timerButton) {
-			System.out.println("3...2...1... suprise! there's no timer yet");
+			Pomodoro.timerVis = Pomodoro.timerVis * -1;
 		} else if (evt.getSource() == backGroundButtons[0]) {
 			currentBg = 0;
 			frame.frameBgChange(Color.white);
