@@ -1,4 +1,4 @@
-/* Shiloh Zheng and Elaine Qian
+/* Elaine Qian and Shiloh Zheng
  * January 11th, 2024
  * Tasklist
  * This class creates a checklist of tasks, which can be edited, removed, or added
