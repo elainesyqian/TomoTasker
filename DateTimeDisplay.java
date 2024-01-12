@@ -10,9 +10,9 @@ import java.awt.*;
 public class DateTimeDisplay {
 	
 	//variable declarations
-	String currentDate;
-	String formattedDate;
-	String formattedTime;
+	public String currentDate;
+	public String formattedDate;
+	public String formattedTime;
 	
 	//constructor
 	public DateTimeDisplay() {
