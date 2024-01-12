@@ -1,4 +1,4 @@
-/* Shiloh Zheng and Elaine Qian
+/* Elaine Qian and Shiloh Zheng
  * January 11th, 2024
  * Main
  * This class runs the constructor of the TomoFrame class
