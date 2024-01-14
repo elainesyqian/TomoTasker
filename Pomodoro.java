@@ -25,7 +25,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public JButton startTimer;
 	public JButton pauseTimer;
 	public JButton resetTimer;
-	public JButton changeAlert;
 	public JButton workTime;
 	public JButton shortBreak;
 	public JButton longBreak;
@@ -70,7 +69,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 		startTimer = new JButton("START");
 		pauseTimer = new JButton("PAUSE");
 		resetTimer = new JButton("RESET");
-		changeAlert = new JButton("change alert");
 		workTime = new JButton("work timer");
 		shortBreak = new JButton("short break");
 		longBreak = new JButton("long break");
@@ -79,7 +77,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 		c.add(startTimer);
 		c.add(pauseTimer);
 		c.add(resetTimer);
-		c.add(changeAlert);
 		c.add(workTime);
 		c.add(shortBreak);
 		c.add(longBreak);
@@ -88,7 +85,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 		startTimer.addActionListener(this);
 		pauseTimer.addActionListener(this);
 		resetTimer.addActionListener(this);
-		changeAlert.addActionListener(this);
 		workTime.addActionListener(this);
 		shortBreak.addActionListener(this);
 		longBreak.addActionListener(this);
@@ -114,7 +110,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			g.setColor(Color.black);
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 			g.drawString("TIMER", pomoX + 20, pomoY + 20);
-			g.drawString("Current Alert Sound:", pomoX + 5, pomoY + 170);
+			g.drawString("Current Alert Sound:", pomoX + 70, pomoY + 170);
 
 			// set buttons to be visible and their location
 			startTimer.setVisible(true);
@@ -139,7 +135,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			longBreak.setBounds(pomoX + 240, pomoY + 95, 100, 30);
 
 			change.setVisible(true);
-			change.setBounds(pomoX + 150, pomoY + 150, 200, 30);
+			change.setBounds(pomoX + 220, pomoY + 150, 120, 30);
 			
 			// sets colour for timer text
 			g.setColor(Color.pink);
@@ -194,7 +190,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 			startTimer.setVisible(false);
 			pauseTimer.setVisible(false);
 			resetTimer.setVisible(false);
-			changeAlert.setVisible(false);
 			workTime.setVisible(false);
 			shortBreak.setVisible(false);
 			longBreak.setVisible(false);
@@ -262,7 +257,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 			lb = true;
 		} else if (evt.getSource() == change) {
 			currentAlert = change.getSelectedItem() + ".wav";
-			System.out.println(currentAlert);
 		}
 
 		repaint(); // updates screen to show changes
