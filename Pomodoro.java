@@ -25,9 +25,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public JButton startTimer;
 	public JButton pauseTimer;
 	public JButton resetTimer;
-	public JButton workTime;
-	public JButton shortBreak;
-	public JButton longBreak;
 
 	// other variable declarations
 	public Container c;
@@ -38,7 +35,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public long initial;
 	public long remaining;
 
-	public boolean play, wt, lb, sb, playAlert = false;
+	public boolean play, playAlert = false;
 
 	public boolean mouseDragging;
 	public int firstMouseX;
@@ -46,9 +43,12 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public int firstPomoX;
 	public int firstPomoY;
 	
-	//alert options: voicemail classic: chime, bloom, 
+	String[] timerOptions = {"Work", "Short Break", "Long Break"};
+	JComboBox changeTimer;
+	String currentTimer;
+	
 	String[] alertOptions = {"Bells", "Electronic", "Flute", "Marimba"};
-	JComboBox change;
+	JComboBox changeAlert;
 	String currentAlert;
 	
 	// constructor
@@ -59,7 +59,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 		// starting timer values
 		min = 40;
 		sec = 0;
-		wt = true;
 
 		timerVis = -1;
 		currentAlert = "Bells.wav";
@@ -69,30 +68,24 @@ public class Pomodoro extends JPanel implements ActionListener {
 		startTimer = new JButton("START");
 		pauseTimer = new JButton("PAUSE");
 		resetTimer = new JButton("RESET");
-		workTime = new JButton("work timer");
-		shortBreak = new JButton("short break");
-		longBreak = new JButton("long break");
 
 		// adding to screen
 		c.add(startTimer);
 		c.add(pauseTimer);
 		c.add(resetTimer);
-		c.add(workTime);
-		c.add(shortBreak);
-		c.add(longBreak);
 
 		// adding actionListiner to know when clicked
 		startTimer.addActionListener(this);
 		pauseTimer.addActionListener(this);
 		resetTimer.addActionListener(this);
-		workTime.addActionListener(this);
-		shortBreak.addActionListener(this);
-		longBreak.addActionListener(this);
-
-		change = new JComboBox(alertOptions);
-		c.add(change);
-		change.addActionListener(this);
 		
+		changeTimer = new JComboBox(timerOptions);
+		c.add(changeTimer);
+		changeTimer.addActionListener(this);
+
+		changeAlert = new JComboBox(alertOptions);
+		c.add(changeAlert);
+		changeAlert.addActionListener(this);
 	}
 
 	// this method takes care of all things drawn to the screen and keeping track of
@@ -110,6 +103,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			g.setColor(Color.black);
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 			g.drawString("TIMER", pomoX + 20, pomoY + 20);
+			g.drawString("Current Timer:", pomoX + 230, pomoY + 60);
 			g.drawString("Current Alert Sound:", pomoX + 70, pomoY + 170);
 
 			// set buttons to be visible and their location
@@ -122,20 +116,11 @@ public class Pomodoro extends JPanel implements ActionListener {
 			resetTimer.setVisible(true);
 			resetTimer.setBounds(pomoX + 5, pomoY + 110, 75, 30);
 
-//			changeAlert.setVisible(true);
-//			changeAlert.setBounds(pomoX + 240, pomoY + 150, 110, 30);
+			changeTimer.setVisible(true);
+			changeTimer.setBounds(pomoX + 225, pomoY + 65, 125, 30);
 
-			workTime.setVisible(true);
-			workTime.setBounds(pomoX + 240, pomoY + 35, 100, 30);
-
-			shortBreak.setVisible(true);
-			shortBreak.setBounds(pomoX + 240, pomoY + 65, 100, 30);
-
-			longBreak.setVisible(true);
-			longBreak.setBounds(pomoX + 240, pomoY + 95, 100, 30);
-
-			change.setVisible(true);
-			change.setBounds(pomoX + 220, pomoY + 150, 120, 30);
+			changeAlert.setVisible(true);
+			changeAlert.setBounds(pomoX + 220, pomoY + 150, 130, 30);
 			
 			// sets colour for timer text
 			g.setColor(Color.pink);
@@ -144,9 +129,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 			// draws the time left
 
 			if (sec < 10) {
-				g.drawString(min + ":0" + sec, pomoX + 90, pomoY + 100);
+				g.drawString(min + ":0" + sec, pomoX + 85, pomoY + 100);
 			} else {
-				g.drawString(min + ":" + sec, pomoX + 90, pomoY + 100);
+				g.drawString(min + ":" + sec, pomoX + 85, pomoY + 100);
 			}
 
 			// if timer has finished and has not played the alert yet
@@ -183,16 +168,13 @@ public class Pomodoro extends JPanel implements ActionListener {
 			}
 			// if timer is closed and not visible
 		} else {
-			
-			change.setVisible(false);
 
-			// set all buttons' visibility and play to false
+			// set all buttons', dropdowns' visibility and play to false
 			startTimer.setVisible(false);
 			pauseTimer.setVisible(false);
 			resetTimer.setVisible(false);
-			workTime.setVisible(false);
-			shortBreak.setVisible(false);
-			longBreak.setVisible(false);
+			changeTimer.setVisible(false);
+			changeAlert.setVisible(false);
 			play = false;
 		}
 
@@ -213,50 +195,35 @@ public class Pomodoro extends JPanel implements ActionListener {
 			// if reset button is clicked set play to false, sec to 0, and min to respective
 			// values based on which timer was last used
 		} else if (evt.getSource() == resetTimer) {
-			if (wt) {
+			
+			currentTimer = changeTimer.getSelectedItem() + "";
+			
+			if (currentTimer.equals("Work")) {
 				min = 40;
-			} else if (sb) {
+			} else if (currentTimer.equals("Short Break")) {
 				min = 5;
-			} else if (lb) {
-				min = 15;
+			} else if (currentTimer.equals("Long Break")) {
+				min = 10;
 			}
 			sec = 0;
 			play = false;
 
-			// if work time is clicked, then set time to respective values and wt to true
-			// and other booleans to false
-		} else if (evt.getSource() == workTime) {
-			play = false;
-			min = 40;
+		} else if (evt.getSource() == changeTimer) {
+			
+			currentTimer = changeTimer.getSelectedItem() + "";
+			
+			if (currentTimer.equals("Work")) {
+				min = 40;
+			} else if (currentTimer.equals("Short Break")) {
+				min = 5;
+			} else if (currentTimer.equals("Long Break")) {
+				min = 10;
+			}
 			sec = 0;
-
-			wt = true;
-			sb = false;
-			lb = false;
-
-			// if short break is clicked, then set time to respective values and sb to true
-			// and other booleans to false
-		} else if (evt.getSource() == shortBreak) {
 			play = false;
-			min = 0;
-			sec = 5;
 
-			wt = false;
-			sb = true;
-			lb = false;
-
-			// if long break is clicked, then set time to respective values and lb to true
-			// and other booleans to false
-		} else if (evt.getSource() == longBreak) {
-			play = false;
-			min = 15;
-			sec = 0;
-
-			wt = false;
-			sb = false;
-			lb = true;
-		} else if (evt.getSource() == change) {
-			currentAlert = change.getSelectedItem() + ".wav";
+		} else if (evt.getSource() == changeAlert) {
+			currentAlert = changeAlert.getSelectedItem() + ".wav";
 		}
 
 		repaint(); // updates screen to show changes
