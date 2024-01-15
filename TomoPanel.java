@@ -1,5 +1,5 @@
-/* Elaine Qian and Shiloh Zheng
- * January 11th, 2024
+/* Elaine Qian and Shiloh ZHeng
+ * January 11nd, 2024
  * TomoPanel
  * This class creates the main program loop, constantly running the program and calling all its methods.
  * The main sections of the program include the Pomodoro timer, the tasklist, the control menu, the streak counter, and stickynotes (yet to be implemented)
@@ -7,7 +7,6 @@
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 public class TomoPanel extends JLayeredPane implements Runnable {
@@ -19,10 +18,13 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 	public Image image;
 	public Graphics graphics;
 
+	public JButton b;
+
 	public TomoMenu menu;
 	public Tasklist list;
 	public Pomodoro timer;
 	public DateTimeDisplay date;
+	public StreakCounter streak;
 
 	public TomoPanel(Container c, TomoFrame frame) {
 		// constructor for this class
@@ -41,6 +43,7 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 		list = new Tasklist(c, frame);
 		timer = new Pomodoro(c);
 		date = new DateTimeDisplay();
+		streak = new StreakCounter();
 
 		// adds the other objects to this panel
 		this.add(menu, 9);
@@ -72,7 +75,6 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 		graphics = image.getGraphics();
 		draw(graphics);// update the positions of everything on the screen
 		g.drawImage(image, 0, 0, this); // move the image on the screen
-
 	}
 
 	// calls draw method in the other classes
@@ -81,6 +83,7 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 		list.draw(g);
 		timer.draw(g);
 		date.draw(g);
+		streak.draw(g);
 	}
 
 	// makes the program continue endlessly, constantly updating the screen
