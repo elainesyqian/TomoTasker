@@ -47,7 +47,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	JComboBox changeTimer;
 	String currentTimer;
 	
-	String[] alertOptions = {"Bells", "Electronic", "Flute", "Marimba"};
+	String[] alertOptions = {"Apex", "Bells", "Electronic", "Flute", "Marimba"};
 	JComboBox changeAlert;
 	String currentAlert;
 	
@@ -61,7 +61,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 		sec = 0;
 
 		timerVis = -1;
-		currentAlert = "Bells.wav";
+		currentAlert = "Apex.wav";
 
 		// buttons setup
 		// initializing
