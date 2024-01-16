@@ -43,6 +43,8 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public int firstPomoX;
 	public int firstPomoY;
 	
+	boolean changedAlert = false;
+	
 	String[] timerOptions = {"Work", "Short Break", "Long Break"};
 	JComboBox changeTimer;
 	String currentTimer;
@@ -143,7 +145,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 				repaint();
 
 				// play alert
-				playSFX(currentAlert);
+				playSound(currentAlert);
 				playAlert = false;
 				play = false;
 			}
@@ -201,7 +203,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			if (currentTimer.equals("Work")) {
 				min = 40;
 			} else if (currentTimer.equals("Short Break")) {
-				min = 5;
+				min = 1;
 			} else if (currentTimer.equals("Long Break")) {
 				min = 10;
 			}
@@ -215,7 +217,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			if (currentTimer.equals("Work")) {
 				min = 40;
 			} else if (currentTimer.equals("Short Break")) {
-				min = 5;
+				min = 1;
 			} else if (currentTimer.equals("Long Break")) {
 				min = 10;
 			}
@@ -224,13 +226,15 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 		} else if (evt.getSource() == changeAlert) {
 			currentAlert = changeAlert.getSelectedItem() + ".wav";
+			repaint();
+			playSound(currentAlert);
 		}
 
 		repaint(); // updates screen to show changes
 	}
 
 	// this method plays audio
-	public static void playSFX(String fileName) {
+	public static void playSound(String fileName) {
 
 		// try-catch to prevent crashing
 		try {
@@ -244,8 +248,8 @@ public class Pomodoro extends JPanel implements ActionListener {
 			// start playing
 			clip.start();
 
-			Thread.sleep(4000);
-			clip.stop();
+//			Thread.sleep(4000);
+//			clip.stop();
 
 		} catch (Exception e) {
 			// nothing will happen if crashes
