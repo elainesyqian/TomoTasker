@@ -1,7 +1,7 @@
 /* Elaine Qian and Shiloh Zheng
- * January 11th, 2024
+ * January 17th, 2024
  * StickyNotes
- * This class creates a checklist of tasks, which can be edited, removed, or added
+ * This class creates a sticky note, which can be typed on, dragged around, and deleted
 */
 
 import java.awt.*;
@@ -12,7 +12,10 @@ import javax.swing.*;
 
 public class StickyNotes extends JPanel implements ActionListener{
 	
+	// creates the dimensions of the sticky note
 	public static final int STICKY_LENGTH = 200;
+	
+	// start location of sticky notes
 	public int stickyX = 350;
 	public int stickyY = 350;
 	
@@ -32,50 +35,61 @@ public class StickyNotes extends JPanel implements ActionListener{
 	public JButton closeButton;
 	
 	public StickyNotes(Container c, TomoFrame frame) {
+		// constructor of StickyNotes
 		
+		// creates a new JTextArea, which is the typeable area of the stickynote
 		note = new JTextArea(1, STICKY_LENGTH);
 		
+		// creates an X close button for the sticky note
 		closeButton = new JButton("X");
 		closeButton.addActionListener(this);
 		
-
-		note.setLineWrap(true);  // wraps the words
+		// sets up the JTextArea so that words wrap
+		// around to a new line when exceeding the edge
+		note.setLineWrap(true); 
 		note.setWrapStyleWord(true);
 		
+		// creates insets for the JTextArea so the text doesn't touch the edges
 		note.setMargin(new Insets(3, 3, 3, 3));
-		
-		//notePanel.add(note);
-		//note.setVisible(true);
 		
 		scrollPart = new JScrollPane(note);
 		
-		c.revalidate();
-		
+		// adds the scrollable pane and the close button to the screen
 		c.add(closeButton, 0);
 		
 		c.add(scrollPart, 0);
+		
+		// refreshes and updates the container
+		c.revalidate();
+		c.repaint();
+		
+		// sets the note to visible when created
+		notesVis = 1;
 	}
 	
+	// draws the parts of the sticky note
 	public void draw(Graphics g) {
 		// if the sticky note is currently supposed to be visible
 		if (notesVis == 1) {
-			// draws the rectangle border
-			
 			// creates the title tab that can be dragged
 			g.setColor(Color.PINK);
 			g.fillRect(stickyX, stickyY, STICKY_LENGTH, 30);
 			
+			// draws the rectangle border
 			g.setColor(Color.BLACK);
 			g.drawRect(stickyX, stickyY, STICKY_LENGTH, STICKY_LENGTH);
 			
+			// adds the JScrollPane with the text area
 			scrollPart.setBounds(stickyX, stickyY + 30 ,  STICKY_LENGTH,  STICKY_LENGTH-30);
-			closeButton.setBounds(stickyX +  STICKY_LENGTH - 30, stickyY + 5,  20,  20);
+			// adds the close button
+			closeButton.setBounds(stickyX +  STICKY_LENGTH - 42, stickyY + 5,  42,  20);
 		} else {
-			// hides the sticky note
+			// hides the parts of the sticky note
 			scrollPart.setVisible(false);
 			closeButton.setVisible(false);
 			note.setVisible(false);
 			
+			// marks the sticky note for deletion by TomoMenu
 			delete = true;
 		}
 
@@ -99,15 +113,15 @@ public class StickyNotes extends JPanel implements ActionListener{
 			// was first pressed down
 			if (firstMouseX >= firstNoteX && firstMouseX <= firstNoteX + STICKY_LENGTH && firstMouseY >= firstNoteY
 					&& firstMouseY <= firstNoteY + 30) {
-				// if the mouse was in the title tab, allow for the list to be dragged
+				// if the mouse was in the title tab, allow for the note to be dragged
 				mouseDragging = true;
 			} else {
-				// otherwise, don't drag the list
+				// otherwise, don't drag the note
 				mouseDragging = false;
 			}
 
 			if (mouseDragging) {
-				// if the list is currently being dragged, make it follow the mouse
+				// if the note is currently being dragged, make it follow the mouse
 				stickyX = e.getX() - (firstMouseX - firstNoteX);
 				stickyY = e.getY() - (firstMouseY - firstNoteY);
 				
@@ -128,7 +142,9 @@ public class StickyNotes extends JPanel implements ActionListener{
 			}
 		}
 		
+		// detects when a button was pressed, and gets the ActionEvent
 		public void actionPerformed(ActionEvent evt) {
+			//inverts the current visibility
 			notesVis = notesVis*-1;
 		}
 		
