@@ -401,6 +401,8 @@ public class TomoMenu extends JPanel implements ActionListener {
 		repaint(); // update screen to show changes
 	}
 
+	// called from TomoPanel when the mouse is pressed
+	// and calls mousePressed for all the sticky notes
 	public void mousePressed(MouseEvent e) {
 		// gets the x and y of the mouse and list when the mouse is pressed
 		for (int i = 0; i < notes.size(); i++) {
@@ -409,8 +411,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 	}
 
 	// called from TomoPanel when the mouse is dragged
-	// and uses the x and y values at the original click
-	// to see if the list should be dragged
+	// and calls mouseDragged for all the sticky notes
 	public void mouseDragged(MouseEvent e) {
 		for (int i = 0; i < notes.size(); i++) {
 			notes.get(i).mouseDragged(e);
