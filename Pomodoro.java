@@ -211,6 +211,8 @@ public class Pomodoro extends JPanel implements ActionListener {
 		// if reset button is clicked set play to false, sec to 0, and min to
 		// respective values based on which timer was last used
 		} else if (evt.getSource() == resetTimer) {
+			
+			currentTimer = changeTimer.getSelectedItem() + "";
 
 			if (currentTimer.equals("Work")) {
 				min = 40;
