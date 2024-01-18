@@ -5,6 +5,7 @@
  * The main sections of the program include the Pomodoro timer, the tasklist, the control menu, and the streak counter
 */
 
+//import statements
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -92,7 +93,7 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 	public void run() {
 		// forces computer to slow down in calling methods
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 40;
+		double amountOfTicks = 60;
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long now;
