@@ -1,5 +1,5 @@
 /* Elaine Qian and Shiloh Zheng
- * January 	17th, 2024
+ * January 17th, 2024
  * TomoMenu
  * This class creates the control menu of the Tomotasker, with buttons to 
  * open new windows/objects that have different functions as well as controls the Sticky Notes
