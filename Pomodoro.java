@@ -35,23 +35,24 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public long initial;
 	public long remaining;
 
-	public boolean play, playAlert = false;
+	public boolean play, playAlert, changedAlert = false;
 
+	// dropdown for timer options
+	String[] timerOptions = { "Work", "Short Break", "Long Break" };
+	JComboBox changeTimer;
+	String currentTimer;
+
+	// dropdown for alert options
+	String[] alertOptions = { "Apex", "Bells", "Electronic", "Flute", "Marimba" };
+	JComboBox changeAlert;
+	String currentAlert;
+
+	// variables for dragging
 	public boolean mouseDragging;
 	public int firstMouseX;
 	public int firstMouseY;
 	public int firstPomoX;
 	public int firstPomoY;
-
-	boolean changedAlert = false;
-
-	String[] timerOptions = { "Work", "Short Break", "Long Break" };
-	JComboBox changeTimer;
-	String currentTimer;
-
-	String[] alertOptions = { "Apex", "Bells", "Electronic", "Flute", "Marimba" };
-	JComboBox changeAlert;
-	String currentAlert;
 
 	// constructor
 	public Pomodoro(Container c) {
@@ -81,10 +82,13 @@ public class Pomodoro extends JPanel implements ActionListener {
 		pauseTimer.addActionListener(this);
 		resetTimer.addActionListener(this);
 
+		// add the timer type dropdown so that the user can choose which timer they use
 		changeTimer = new JComboBox(timerOptions);
 		c.add(changeTimer);
 		changeTimer.addActionListener(this);
 
+		// add the alert dropdown so that the user can choose which alert they would
+		// like to use
 		changeAlert = new JComboBox(alertOptions);
 		c.add(changeAlert);
 		changeAlert.addActionListener(this);
@@ -98,18 +102,22 @@ public class Pomodoro extends JPanel implements ActionListener {
 		if (timerVis == 1) {
 			// draws general rectangle outline
 			g.setColor(Color.WHITE);
-	        g.fillRect(pomoX, pomoY, POMO_WIDTH, POMO_HEIGHT);
+			g.fillRect(pomoX, pomoY, POMO_WIDTH, POMO_HEIGHT);
 
 			// draws the title bar and background
 			g.setColor(Color.PINK);
 			g.fillRect(pomoX, pomoY, POMO_WIDTH, 30);
+
+			// window text
 			g.setColor(Color.black);
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 			g.drawString("TIMER", pomoX + 20, pomoY + 20);
+
+			// text on screen
 			g.drawString("Current Timer:", pomoX + 230, pomoY + 60);
 			g.drawString("Current Alert Sound:", pomoX + 70, pomoY + 170);
 
-			// set buttons to be visible and their location
+			// set buttons and dropdowns to be visible and their location
 			startTimer.setVisible(true);
 			startTimer.setBounds(pomoX + 5, pomoY + 40, 75, 30);
 
@@ -125,12 +133,11 @@ public class Pomodoro extends JPanel implements ActionListener {
 			changeAlert.setVisible(true);
 			changeAlert.setBounds(pomoX + 220, pomoY + 150, 130, 30);
 
-			// sets colour for timer text
+			// sets colour for timer display
 			g.setColor(Color.pink);
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
 
 			// draws the time left
-
 			if (sec < 10) {
 				g.drawString(min + ":0" + sec, pomoX + 85, pomoY + 100);
 			} else {
@@ -140,14 +147,18 @@ public class Pomodoro extends JPanel implements ActionListener {
 			// if timer has finished and has not played the alert yet
 			if (playAlert) {
 
+				// repaint to the screen so displays 0:00
 				sec = 0;
-				// set play to false so no negative numbers
 				g.drawString("0:00", 190, 170);
 				repaint();
 
 				// play alert
 				playSound(currentAlert);
+
+				// set playAlert to false the audio doesn't overlap
 				playAlert = false;
+
+				// set play to false so no negative numbers
 				play = false;
 			}
 
@@ -165,6 +176,8 @@ public class Pomodoro extends JPanel implements ActionListener {
 					min--;
 				}
 
+				// set playAlert to true when seconds reaches -1 (workaround, bc otherwise, the
+				// alert goes off when displaying 0:01)
 				if (sec == -1 && min == 0) {
 					playAlert = true;
 				}
@@ -186,7 +199,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	// this method takes care all logistics when a button is clicked
 	public void actionPerformed(ActionEvent evt) {
 
-		// if start button is clicked set play to true and played Alert to false
+		// if start button is clicked set play to true and playedAlert to false
 		if (evt.getSource() == startTimer) {
 			play = true;
 			playAlert = false;
@@ -195,39 +208,46 @@ public class Pomodoro extends JPanel implements ActionListener {
 		} else if (evt.getSource() == pauseTimer) {
 			play = false;
 
-			// if reset button is clicked set play to false, sec to 0, and min to respective
-			// values based on which timer was last used
+		// if reset button is clicked set play to false, sec to 0, and min to
+		// respective values based on which timer was last used
 		} else if (evt.getSource() == resetTimer) {
 
-			currentTimer = changeTimer.getSelectedItem() + "";
-
 			if (currentTimer.equals("Work")) {
 				min = 40;
 			} else if (currentTimer.equals("Short Break")) {
-				min = 1;
+				min = 5;
 			} else if (currentTimer.equals("Long Break")) {
-				min = 10;
+				min = 15;
 			}
 			sec = 0;
 			play = false;
 
+		//if timer dropdown is clicked	
 		} else if (evt.getSource() == changeTimer) {
 
+			//change the current timer to what is selected
 			currentTimer = changeTimer.getSelectedItem() + "";
 
+			//set min to respective values based on timer type
 			if (currentTimer.equals("Work")) {
 				min = 40;
 			} else if (currentTimer.equals("Short Break")) {
-				min = 1;
+				min = 5;
 			} else if (currentTimer.equals("Long Break")) {
-				min = 10;
+				min = 15;
 			}
+			
+			//set sec to 0 and play to false
 			sec = 0;
 			play = false;
 
+		//if alert dropdown is clicked
 		} else if (evt.getSource() == changeAlert) {
+			
+			//change the current alert to what is selected
 			currentAlert = changeAlert.getSelectedItem() + ".wav";
-			repaint();
+			
+			//play the alert that has been chosen so that the user knows what it sounds like
 			playSound(currentAlert);
 		}
 
@@ -248,9 +268,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 			// start playing
 			clip.start();
-
-//			Thread.sleep(4000);
-//			clip.stop();
 
 		} catch (Exception e) {
 			// nothing will happen if crashes
