@@ -56,6 +56,7 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 				// if the mouse is pressed, run functions in the list and timer
 				list.mousePressed(e);
 				timer.mousePressed(e);
+				menu.mousePressed(e);
 			}
 		});
 
@@ -65,6 +66,7 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 			public void mouseDragged(MouseEvent e) {
 				list.mouseDragged(e);
 				timer.mouseDragged(e);
+				menu.mouseDragged(e);
 			}
 		});
 	}
