@@ -30,6 +30,7 @@ public class Tasklist extends JPanel implements ActionListener {
 	public JButton addTask;
 	// arraylist that contains the textfields of each task
 	public ArrayList<JTextField> tasks = new ArrayList<JTextField>();
+	public ArrayList<JCheckBox> checkBoxs = new ArrayList<JCheckBox>();
 
 	public int firstMouseX;
 	public int firstMouseY;
@@ -39,6 +40,11 @@ public class Tasklist extends JPanel implements ActionListener {
 	public int taskMoveDown = 20;
 
 	public static int taskVis;
+	
+	public static JPanel panel;
+	public static JScrollPane scrollPart;
+	
+	public GridBagConstraints gridLay;
 
 	public Tasklist(Container c, TomoFrame frame) {
 		// constructor of the Tasklist
@@ -55,17 +61,44 @@ public class Tasklist extends JPanel implements ActionListener {
 
 		// adds an action listener to the + button
 		addTask.addActionListener(this);
-
+		
 		// adds a first task to the list so it doesn't start empty
-		tasks.add(new JTextField("default task", 20));
+		tasks.add(new JTextField("add more tasks!", 25));
+		
+		checkBoxs.add(new JCheckBox());
 
 		// adds the first task textfield to the container
-		c.add(tasks.get(0));
+		
+		panel = new JPanel();
+		
+		panel.setLayout(new GridBagLayout());
+		
+		gridLay = new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,GridBagConstraints.NORTH, GridBagConstraints.NORTH, new Insets(0, 0, 0, 0), 0, 0);
+		
+		gridLay.gridx = 0;
+		gridLay.gridy = 0;
+		
+		panel.add(checkBoxs.get(0), gridLay);
+		
+		gridLay.gridx = 1;
+		gridLay.gridy = 0;
+		
+		panel.add(tasks.get(0), gridLay);
+		
 		// positions that task
-		tasks.get(0).setBounds(listX + 5, listY + taskMoveDown, 200, 15);
+		//tasks.get(0).setBounds(listX + 5, listY + taskMoveDown, 200, 15);
+		
+		scrollPart = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+        scrollPart.setMinimumSize(new Dimension(LIST_WIDTH , list_height));
+        scrollPart.setMaximumSize(new Dimension(LIST_WIDTH , list_height + 200));
+        scrollPart.setPreferredSize(new Dimension(LIST_WIDTH , list_height));
+		
+		c.add(scrollPart);
 
 		// sets the tasklist to be initially hidden
 		taskVis = -1;
+		
 	}
 
 	// draws the parts of the tasklist
@@ -73,7 +106,7 @@ public class Tasklist extends JPanel implements ActionListener {
 		// if the tasklist is currently supposed to be visible
 		if (taskVis == 1) {
 			// draws the rectangle border
-			g.drawRect(listX, listY, LIST_WIDTH, list_height);
+			g.drawRect(listX, listY, LIST_WIDTH, 150);
 			// drags the title tab that can be dragged
 			g.setColor(Color.PINK);
 			g.fillRect(listX, listY, LIST_WIDTH, 30);
@@ -85,7 +118,9 @@ public class Tasklist extends JPanel implements ActionListener {
 			g.setColor(Color.BLACK);
 			g.drawString("TO DO", listX + 10, listY + 15);
 
-			addTask.setBounds(listX + LIST_WIDTH - 25, listY + 35, 20, 20);
+			addTask.setBounds(listX + LIST_WIDTH - 25, listY + 5, 20, 20);
+			
+			scrollPart.setBounds(listX, listY + 30, LIST_WIDTH, 125);
 
 			// calls a method that will add all the tasks on screen
 			drawTasks();
@@ -108,15 +143,26 @@ public class Tasklist extends JPanel implements ActionListener {
 				// if the tasklist is supposed to be visible right now
 				// shows the current task
 				tasks.get(i).setVisible(true);
+				checkBoxs.get(i).setVisible(true);
 				// positions the current task
-				tasks.get(i).setBounds(listX + 5, listY + 25 + taskMoveDown, 200, 20);
+				
+				//tasks.get(i).setBounds(listX + 23, listY + 25 + taskMoveDown, 200, 20);
+				//checkBoxs.get(i).setBounds(listX + 5, listY + 25 + taskMoveDown, 17, 17);
+				
 				// makes the next task position lower than the current one
 				taskMoveDown = taskMoveDown + 20;
 			} else {
 				// don't show the current task
 				tasks.get(i).setVisible(false);
+				checkBoxs.get(i).setVisible(false);
 			}
 
+		}
+		
+		if (taskVis == 1) {
+			scrollPart.setVisible(true);
+		} else {
+			scrollPart.setVisible(false);
 		}
 
 	}
@@ -172,16 +218,49 @@ public class Tasklist extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 		
 		JTextField newTask;
+		JCheckBox newBox;
 		
 		if (evt.getSource() == addTask) {
 			// if the add new task + button was pressed
 			// add a new text field to the screen and the array list of textfields
-			newTask = new JTextField("add your task here!", 10);
+			
+			c.remove(scrollPart);
+			
+			
+			newBox = new JCheckBox();
+			
+			checkBoxs.add(newBox);
+			
+			gridLay.gridx = 0;
+			gridLay.gridy = checkBoxs.size() - 1;
+			
+			panel.add(newBox, gridLay);
+			
+			newTask = new JTextField("type here", 25);
+			
+			
 			tasks.add(newTask);
-			c.add(newTask, 0);
+			
+			gridLay.gridy = tasks.size() - 1;
+			gridLay.gridx = 1;
+			
+			panel.add(newTask, gridLay);
+			
 			
 			// update the list borders to fit the additional task
-			list_height = 65 + tasks.size() * 20;
+			list_height = 70 + tasks.size() * 20;
+			
+			panel.setPreferredSize(new Dimension(LIST_WIDTH, list_height));
+			
+			scrollPart = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+			c.add(scrollPart, 2);
+			
+			scrollPart.revalidate();
+			this.revalidate();
+			c.revalidate();
+			frame.revalidate();
+			frame.repaint();
 		}
 		repaint(); // update screen to show changes
 	}
