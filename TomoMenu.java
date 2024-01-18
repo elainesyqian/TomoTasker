@@ -25,8 +25,8 @@ public class TomoMenu extends JPanel implements ActionListener {
 	JButton newNotesButton;
 
 	// array of buttons for rooms
-	JButton[] backGroundButtons = { new JButton("1"), new JButton("2"), new JButton("3"), new JButton("4"),
-			new JButton("5") };
+	JButton[] backGroundButtons = { new JButton("rain"), new JButton("cafe"), new JButton("fire"), new JButton("bird"),
+			new JButton("wave") };
 
 	// how much to shift each room button by
 	public int buttonRightShift;
@@ -44,6 +44,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 	// variables for visibility/sound of each room
 	public int rainVis, cafeVis, fireVis, birdVis, waveVis = -1;
+	public int counter = 0;
 
 	// all variables needed to play ambient sound
 	File rainClip, cafeClip, fireClip, birdClip, waveClip;
@@ -54,6 +55,13 @@ public class TomoMenu extends JPanel implements ActionListener {
 	public ImageIcon rainIcon, cafeIcon, fireIcon, birdIcon, waveIcon;
 	public Image rainImage, cafeImage, fireImage, birdImage, waveImage;
 
+	public ImageIcon[] backGroundSymbols = {
+			new ImageIcon(new ImageIcon("rainSymbol.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)),
+			new ImageIcon(new ImageIcon("cafeSymbol.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)),
+			new ImageIcon(new ImageIcon("fireSymbol.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)),
+			new ImageIcon(new ImageIcon("birdsSymbol.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)),
+			new ImageIcon(new ImageIcon("wavesSymbol.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)) };
+
 	// constructor of TomoMenu
 	public TomoMenu(Container c, TomoFrame frame) {
 		this.c = c;
@@ -63,12 +71,19 @@ public class TomoMenu extends JPanel implements ActionListener {
 		currentBg = "Rain";
 		rainVis = 1;
 
+		ImageIcon timerSymbol = new ImageIcon(
+				new ImageIcon("timerSymbol.png").getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+		ImageIcon listSymbol = new ImageIcon(
+				new ImageIcon("listSymbol.png").getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+
 		// creates, adds, positions the timer button on the screen and adds an action
 		// listener
 		timerButton = new JButton("TIMER");
 		c.add(timerButton);
 		timerButton.setBounds(875, 75, 90, 90);
 		timerButton.addActionListener(this);
+		timerButton.setFocusable(false);
+		timerButton.setIcon(timerSymbol);
 
 		// creates, adds, positions the checklist button on the screen and adds an
 		// action listener
@@ -76,6 +91,8 @@ public class TomoMenu extends JPanel implements ActionListener {
 		c.add(checkListButton);
 		checkListButton.setBounds(995, 75, 90, 90);
 		checkListButton.addActionListener(this);
+		checkListButton.setFocusable(false);
+		checkListButton.setIcon(listSymbol);
 
 		// creates, adds, positions the newNotes button on the screen and adds an action
 		// listener
@@ -97,6 +114,9 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 			// adds an action listener to each background button
 			jB.addActionListener(this);
+			jB.setFocusable(false);
+			jB.setIcon(backGroundSymbols[counter]);
+			counter++;
 		}
 
 		// gets todays quote
@@ -185,153 +205,103 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 		// draws the respective room text to screen
 		// plays corresponding audio while stopping all other audio
-		if (currentBg.equals("Rain")) {
-			g.drawString("Rainy Day", 875, 300);
 
-			// if on "play" mode
-			if (rainVis == 1) {
-				try {
+		try {
+
+			if (currentBg.equals("Rain")) {
+				g.drawString("Rainy Day", 875, 300);
+
+				// if on "play" mode
+				if (rainVis == 1) {
 					rainPlay.start(); // need implement looping sound
-				} catch (Exception e) {
-					// nothing will happen if crashes
-				}
 
 				// otherwise, stop the audio
-			} else {
-				try {
+				} else {
 					rainPlay.stop();
-				} catch (Exception e) {
-					// nothing will happen if crashes
 				}
-			}
 
-			// stops all other audio
-			try {
+				// stops all other audio
 				cafePlay.stop();
 				firePlay.stop();
 				birdPlay.stop();
 				wavePlay.stop();
-			} catch (Exception e) {
-				// nothing will happen if crashes
-			}
 
-		} else if (currentBg.equals("Cafe")) {
-			g.drawString("Cafe", 875, 300);
+			} else if (currentBg.equals("Cafe")) {
+				g.drawString("Cafe", 875, 300);
 
-			// if on "play" mode
-			if (cafeVis == 1) {
-				try {
+				// if on "play" mode
+				if (cafeVis == 1) {
 					cafePlay.start(); // need implement looping sound
-				} catch (Exception e) {
-					// nothing will happen if crashes
-				}
+
 				// otherwise, stop the audio
-			} else {
-				try {
+				} else {
 					cafePlay.stop();
-				} catch (Exception e) {
-					// nothing will happen if crashes
 				}
-			}
 
-			// stops all other audio
-			try {
+				// stops all other audio
 				rainPlay.stop();
 				firePlay.stop();
 				birdPlay.stop();
 				wavePlay.stop();
-			} catch (Exception e) {
-				// nothing will happen if crashes
-			}
 
-		} else if (currentBg.equals("Fire")) {
-			g.drawString("Fireplace", 875, 300);
+			} else if (currentBg.equals("Fire")) {
+				g.drawString("Fireplace", 875, 300);
 
-			// if on "play" mode
-			if (fireVis == 1) {
-				try {
+				// if on "play" mode
+				if (fireVis == 1) {
 					firePlay.start(); // need implement looping sound
-				} catch (Exception e) {
-					// nothing will happen if crashes
-				}
+
 				// otherwise, stop the audio
-			} else {
-				try {
+				} else {
 					firePlay.stop();
-				} catch (Exception e) {
-					// nothing will happen if crashes
 				}
-			}
 
-			// stops all other audio
-			try {
+				// stops all other audio
 				rainPlay.stop();
 				cafePlay.stop();
 				birdPlay.stop();
 				wavePlay.stop();
-			} catch (Exception e) {
-				// nothing will happen if crashes
-			}
 
-		} else if (currentBg.equals("Bird")) {
-			g.drawString("Birds Chirping", 875, 300);
+			} else if (currentBg.equals("Bird")) {
+				g.drawString("Birds Chirping", 875, 300);
 
-			// if on "play" mode
-			if (birdVis == 1) {
-				try {
+				// if on "play" mode
+				if (birdVis == 1) {
 					birdPlay.start(); // need implement looping sound
-				} catch (Exception e) {
-					// nothing will happen if crashes
-				}
-				// otherwise, stop the audio
-			} else {
-				try {
-					birdPlay.stop();
-				} catch (Exception e) {
-					// nothing will happen if crashes
-				}
-			}
 
-			// stops all other audio
-			try {
+				// otherwise, stop the audio
+				} else {
+					birdPlay.stop();
+				}
+
+				// stops all other audio
 				rainPlay.stop();
 				cafePlay.stop();
 				firePlay.stop();
 				wavePlay.stop();
-			} catch (Exception e) {
-				// nothing will happen if crashes
-			}
 
-		} else if (currentBg.equals("Wave")) {
-			g.drawString("Waves at the Beach", 875, 300);
+			} else if (currentBg.equals("Wave")) {
+				g.drawString("Waves at the Beach", 875, 300);
 
-			// if on "play" mode
-			if (waveVis == 1) {
-				try {
+				// if on "play" mode
+				if (waveVis == 1) {
 					wavePlay.start(); // need implement looping sound
-				} catch (Exception e) {
-					// nothing will happen if crashes
-				}
 
 				// otherwise, stop the audio
-			} else {
-				try {
+				} else {
 					wavePlay.stop();
-				} catch (Exception e) {
-					// nothing will happen if crashes
 				}
-			}
 
-			// stops all other audio
-			try {
+				// stops all other audio
 				rainPlay.stop();
 				cafePlay.stop();
 				firePlay.stop();
 				birdPlay.stop();
-			} catch (Exception e) {
-				// nothing will happen if crashes
+
 			}
 
+		} catch (Exception e) {
+			// nothing will happen if crashes
 		}
 
 		// TODO add each note to screen
