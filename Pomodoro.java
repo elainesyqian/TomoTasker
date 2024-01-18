@@ -25,6 +25,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public JButton startTimer;
 	public JButton pauseTimer;
 	public JButton resetTimer;
+	public JButton closeButton;
 
 	// other variable declarations
 	public Container c;
@@ -71,16 +72,19 @@ public class Pomodoro extends JPanel implements ActionListener {
 		startTimer = new JButton("START");
 		pauseTimer = new JButton("PAUSE");
 		resetTimer = new JButton("RESET");
+		closeButton = new JButton("X");
 
 		// adding to screen
 		c.add(startTimer);
 		c.add(pauseTimer);
 		c.add(resetTimer);
+		c.add(closeButton);
 
 		// adding actionListiner to know when clicked
 		startTimer.addActionListener(this);
 		pauseTimer.addActionListener(this);
 		resetTimer.addActionListener(this);
+		closeButton.addActionListener(this);
 
 		// add the timer type dropdown so that the user can choose which timer they use
 		changeTimer = new JComboBox(timerOptions);
@@ -126,6 +130,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 			resetTimer.setVisible(true);
 			resetTimer.setBounds(pomoX + 5, pomoY + 110, 75, 30);
+			
+			closeButton.setVisible(true);
+			closeButton.setBounds(pomoX + POMO_WIDTH - 42, pomoY + 5, 35, 20);
 
 			changeTimer.setVisible(true);
 			changeTimer.setBounds(pomoX + 225, pomoY + 65, 125, 30);
@@ -189,6 +196,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			startTimer.setVisible(false);
 			pauseTimer.setVisible(false);
 			resetTimer.setVisible(false);
+			closeButton.setVisible(false);
 			changeTimer.setVisible(false);
 			changeAlert.setVisible(false);
 			play = false;
@@ -211,7 +219,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 		// if reset button is clicked set play to false, sec to 0, and min to
 		// respective values based on which timer was last used
 		} else if (evt.getSource() == resetTimer) {
-			
 			currentTimer = changeTimer.getSelectedItem() + "";
 
 			if (currentTimer.equals("Work")) {
@@ -224,6 +231,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 			sec = 0;
 			play = false;
 
+		} else if (evt.getSource() == closeButton) {
+			timerVis = -1;
+			
 		//if timer dropdown is clicked	
 		} else if (evt.getSource() == changeTimer) {
 
