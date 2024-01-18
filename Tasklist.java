@@ -1,7 +1,7 @@
 /* Elaine Qian and Shiloh Zheng
- * January 11th, 2024
+ * January 17th, 2024
  * Tasklist
- * This class creates a checklist of tasks, which can be edited, removed, or added
+ * This class creates a checklist of tasks, which can be added, edited, or removed (yet to be implemented)
 */
 
 import java.awt.*;

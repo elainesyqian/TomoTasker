@@ -1,6 +1,6 @@
 /* Elaine Qian and Shiloh ZHeng
- * January 11nd, 2024
- * TomoPanel
+ * January 17th, 2024
+ * Pomodoro
  * This class handles all aspects of the Pomodoro timer feature
 */
 
@@ -42,17 +42,17 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public int firstMouseY;
 	public int firstPomoX;
 	public int firstPomoY;
-	
+
 	boolean changedAlert = false;
-	
-	String[] timerOptions = {"Work", "Short Break", "Long Break"};
+
+	String[] timerOptions = { "Work", "Short Break", "Long Break" };
 	JComboBox changeTimer;
 	String currentTimer;
-	
-	String[] alertOptions = {"Apex", "Bells", "Electronic", "Flute", "Marimba"};
+
+	String[] alertOptions = { "Apex", "Bells", "Electronic", "Flute", "Marimba" };
 	JComboBox changeAlert;
 	String currentAlert;
-	
+
 	// constructor
 	public Pomodoro(Container c) {
 		// setup
@@ -80,7 +80,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 		startTimer.addActionListener(this);
 		pauseTimer.addActionListener(this);
 		resetTimer.addActionListener(this);
-		
+
 		changeTimer = new JComboBox(timerOptions);
 		c.add(changeTimer);
 		changeTimer.addActionListener(this);
@@ -97,7 +97,8 @@ public class Pomodoro extends JPanel implements ActionListener {
 		// if the timer is open or 'visible'
 		if (timerVis == 1) {
 			// draws general rectangle outline
-			g.drawRect(pomoX, pomoY, POMO_WIDTH, POMO_HEIGHT);
+			g.setColor(Color.WHITE);
+	        g.fillRect(pomoX, pomoY, POMO_WIDTH, POMO_HEIGHT);
 
 			// draws the title bar and background
 			g.setColor(Color.PINK);
@@ -123,7 +124,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 			changeAlert.setVisible(true);
 			changeAlert.setBounds(pomoX + 220, pomoY + 150, 130, 30);
-			
+
 			// sets colour for timer text
 			g.setColor(Color.pink);
 			g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
@@ -138,7 +139,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 			// if timer has finished and has not played the alert yet
 			if (playAlert) {
-				
+
 				sec = 0;
 				// set play to false so no negative numbers
 				g.drawString("0:00", 190, 170);
@@ -197,9 +198,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 			// if reset button is clicked set play to false, sec to 0, and min to respective
 			// values based on which timer was last used
 		} else if (evt.getSource() == resetTimer) {
-			
+
 			currentTimer = changeTimer.getSelectedItem() + "";
-			
+
 			if (currentTimer.equals("Work")) {
 				min = 40;
 			} else if (currentTimer.equals("Short Break")) {
@@ -211,9 +212,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 			play = false;
 
 		} else if (evt.getSource() == changeTimer) {
-			
+
 			currentTimer = changeTimer.getSelectedItem() + "";
-			
+
 			if (currentTimer.equals("Work")) {
 				min = 40;
 			} else if (currentTimer.equals("Short Break")) {

@@ -1,20 +1,20 @@
-/* Shiloh Zheng and Elaine Qian
- * January 11th, 2024
+/* Elaine Qian and Shiloh ZHeng
+ * January 	17th, 2024
  * TomoMenu
  * This class creates the control menu of the Tomotasker, with buttons to 
- * open new windows/objects that have different functions
+ * open new windows/objects that have different functions as well as controls the Sticky Notes
 */
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
+import java.awt.event.*;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import javax.sound.sampled.*;
 import javax.swing.*;
 
 public class TomoMenu extends JPanel implements ActionListener {
-	// size of the rectangle border of the menu
+	// size of the rectangle
 	public static final int MENU_WIDTH = 300;
 	public static final int MENU_HEIGHT = 550;
 
@@ -22,166 +22,376 @@ public class TomoMenu extends JPanel implements ActionListener {
 	JButton checkListButton;
 	JButton newNotesButton;
 
+	// TODO
 	JButton[] backGroundButtons = { new JButton("1"), new JButton("2"), new JButton("3"), new JButton("4"),
 			new JButton("5") };
 
-	// array of possible quotes
-	String[] dailyQuote = { "wow, awesome", "wow2", "epic, so epic", "w" };
-	
 	public ArrayList<StickyNotes> notes = new ArrayList<StickyNotes>();
 	public StickyNotes newBlankNote;
+	
+	public int buttonRightShift;
 
-	int todaysQuoteIndex;
-	int buttonRightShift;
-
-	int currentBg;
+	public String currentBg;
+	public static String todaysQuote;
 
 	public Container c;
 	public TomoFrame frame;
 
-	public TomoMenu(Container c, TomoFrame frame) {
-		// constructor of the TomoMenu
+	public int rain, cafe, fire, bird, wave = -1;
+	File rainClip, cafeClip, fireClip, birdClip, waveClip;
+	AudioInputStream rainStream, cafeStream, fireStream, birdStream, waveStream;
+	Clip rainPlay, cafePlay, firePlay, birdPlay, wavePlay;
+	
+	public ImageIcon rainIcon, cafeIcon, fireIcon, birdIcon, waveIcon;
+	public Image rainImage, cafeImage, fireImage, birdImage, waveImage;
 
-		// gets the container and frame, in order to place things
-		// and change the background later
+	public TomoMenu(Container c, TomoFrame frame) {
+		// super(850, 50, MENU_WIDTH, MENU_HEIGHT);
 		this.c = c;
 		this.frame = frame;
 
-		// sets the default background to the plaine white one
-		currentBg = 0;
+		currentBg = "Rain";
+		rain = 1;
 
-		// creates the buttons that open the timer, tasklist, and sticky notes
-		// respectively
 		timerButton = new JButton("TIMER");
 		checkListButton = new JButton("CHECKLIST");
 		newNotesButton = new JButton("ADD A NEW NOTE");
 
-		// adds the timer button to the container and positions it on screen
 		c.add(timerButton);
 		timerButton.setBounds(875, 75, 90, 90);
 
-		// adds the checklist button to the container and positions it on screen
 		c.add(checkListButton);
 		checkListButton.setBounds(995, 75, 90, 90);
 
-		// adds the new sticky note button to the container and positions it on screen
 		c.add(newNotesButton);
 		newNotesButton.setBounds(875, 195, 255, 50);
 
-		// positions the background changing buttons so that they are all beside each
-		// other
 		buttonRightShift = 0;
 
 		for (JButton jB : backGroundButtons) {
 			c.add(jB);
 			jB.setBounds(870 + buttonRightShift, 320, 45, 45);
-			// increases the x-position of the next background button to place
 			buttonRightShift = buttonRightShift + 55;
 
-			// adds an action listener to each background button
 			jB.addActionListener(this);
 		}
 
-		// added an action listener to the rest of the buttons
 		timerButton.addActionListener(this);
 		checkListButton.addActionListener(this);
 		newNotesButton.addActionListener(this);
 
-		// changes the quote every time the program is opened
-		todaysQuoteIndex = (int) ((Math.random() * (4)));
-	}
+		todaysQuote = getQuote();
 
-	// draws parts of the menu
-	public void draw(Graphics g) {
+		try {
+			rainClip = new File("Rain.wav");
+			rainStream = AudioSystem.getAudioInputStream(rainClip);
+			rainPlay = AudioSystem.getClip();
+			rainPlay.open(rainStream); 
 
-		// draws the rectangle border of the menu
-		g.drawRect(850, 50, MENU_WIDTH, MENU_HEIGHT);
+			cafeClip = new File("Cafe.wav");
+			cafeStream = AudioSystem.getAudioInputStream(cafeClip);
+			cafePlay = AudioSystem.getClip();
+			cafePlay.open(cafeStream);
 
-		// adds text that says what background "room" the user is currently in
-		g.drawString("CURRENT ROOM:", 875, 275);
+			fireClip = new File("Fire.wav");
+			fireStream = AudioSystem.getAudioInputStream(fireClip);
+			firePlay = AudioSystem.getClip();
+			firePlay.open(fireStream);
 
-		// checks what the background currently is
-		// to adds text that says what background "room" the user is currently in
-		if (currentBg == 0) {
-			g.drawString("BLANK FRAME OF AN INCOMPLETE PROJECT", 875, 300);
-		} else if (currentBg == 1) {
-			g.drawString("BLINDING BLUE", 875, 300);
-		} else if (currentBg == 2) {
-			g.drawString("GREENSCREEN", 875, 300);
-		} else if (currentBg == 3) {
-			g.drawString("IT'S NOT PURPLE", 875, 300);
-		} else if (currentBg == 4) {
-			g.drawString("CLOSEUP OF AN APPLE", 875, 300);
+			birdClip = new File("Birds.wav");
+			birdStream = AudioSystem.getAudioInputStream(birdClip);
+			birdPlay = AudioSystem.getClip();
+			birdPlay.open(birdStream);
+
+			waveClip = new File("Waves.wav");
+			waveStream = AudioSystem.getAudioInputStream(waveClip);
+			wavePlay = AudioSystem.getClip();
+			wavePlay.open(waveStream);
+			
+		} catch (Exception e) {
+
 		}
 		
-		// TODO add each note to screen
-		for (int i = 0; i < notes.size(); i++) {
-			if (!notes.get(i).delete) {
-				notes.get(i).draw(g);
-			} else {
-				notes.remove(i);
-			}
-		}
-
-		// adds text that adds a quote on screen
-		g.drawString("DAILY QUOTE:", 875, 400);
-		g.drawString(dailyQuote[todaysQuoteIndex], 875, 415);
+		rainIcon = new ImageIcon("RainBG.png");
+		rainImage = rainIcon.getImage();
+		
+		cafeIcon = new ImageIcon("CafeBG.png");
+		cafeImage = cafeIcon.getImage();
+		
+		fireIcon = new ImageIcon("FireBG.png");
+		fireImage = fireIcon.getImage();
+		
+		birdIcon = new ImageIcon("BirdBG.png");
+		birdImage = birdIcon.getImage();
+		
+		waveIcon = new ImageIcon("WaveBG.png");
+		waveImage = waveIcon.getImage();
 
 	}
 
-	// called when a button on the menu is pressed
-	// in order to change something about the screen
+	public void draw(Graphics g) {
+		
+		if(currentBg.equals("Rain")) {
+			g.drawImage(rainImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
+			
+		} else if (currentBg.equals("Cafe")) {
+			g.drawImage(cafeImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
+			
+		} else if (currentBg.equals("Fire")) {
+			g.drawImage(fireImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
+			
+		} else if (currentBg.equals("Bird")) {
+			g.drawImage(birdImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
+			
+		} else if (currentBg.equals("Wave")) {
+			g.drawImage(waveImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
+		}
+			
+		// draws the rectangle
+		g.setColor(Color.PINK);
+		g.fillRect(850, 50, MENU_WIDTH, MENU_HEIGHT);
+
+		g.setColor(Color.BLACK);
+		if (currentBg.equals("Rain")) {
+			
+			g.drawString("Rainy Day", 875, 300);
+
+			if (rain == 1) {
+				try {
+					rainPlay.start(); // loop code
+				} catch (Exception e) {
+				}
+			} else {
+				try {
+					rainPlay.stop();
+				} catch (Exception e) {
+				}
+			}
+			
+			try {
+				cafePlay.stop();
+				firePlay.stop();
+				birdPlay.stop();
+				wavePlay.stop();
+			} catch (Exception e) {
+				
+			}
+
+		} else if (currentBg.equals("Cafe")) {
+			g.drawString("Cafe", 875, 300);
+			
+			if (cafe == 1) {
+				try {
+					cafePlay.start(); // loop code
+				} catch (Exception e) {
+				}
+			} else {
+				try {
+					cafePlay.stop();
+				} catch (Exception e) {
+				}
+			}
+			
+			try {
+				rainPlay.stop();
+				firePlay.stop();
+				birdPlay.stop();
+				wavePlay.stop();
+			} catch (Exception e) {
+				
+			}
+
+		} else if (currentBg.equals("Fire")) {
+			g.drawString("Fireplace", 875, 300);
+			
+			if (fire == 1) {
+				try {
+					firePlay.start(); // loop code
+				} catch (Exception e) {
+				}
+			} else {
+				try {
+					firePlay.stop();
+				} catch (Exception e) {
+				}
+			}
+			
+			try {
+				rainPlay.stop();
+				cafePlay.stop();
+				birdPlay.stop();
+				wavePlay.stop();
+			} catch (Exception e) {
+				
+			}
+
+		} else if (currentBg.equals("Bird")) {
+			g.drawString("Birds Chirping", 875, 300);
+			
+			if (bird == 1) {
+				try {
+					birdPlay.start(); // loop code
+				} catch (Exception e) {
+				}
+			} else {
+				try {
+					birdPlay.stop();
+				} catch (Exception e) {
+				}
+			}
+			
+			try {
+				rainPlay.stop();
+				cafePlay.stop();
+				firePlay.stop();
+				wavePlay.stop();
+			} catch (Exception e) {
+				
+			}
+
+		} else if (currentBg.equals("Wave")) {
+			g.drawString("Waves at the Beach", 875, 300);
+			
+			if (wave == 1) {
+				try {
+					wavePlay.start(); // loop code
+				} catch (Exception e) {
+				}
+			} else {
+				try {
+					wavePlay.stop();
+				} catch (Exception e) {
+				}
+			}
+			
+			try {
+				rainPlay.stop();
+				cafePlay.stop();
+				firePlay.stop();
+				birdPlay.stop();
+			} catch (Exception e) {
+				
+			}
+			
+		}
+		
+
+        g.setColor(Color.BLACK);
+		g.drawString("CURRENT ROOM:", 875, 275);
+
+		g.setColor(Color.WHITE);
+		g.drawString("DAILY QUOTE:", 5, 635);
+		g.drawString(todaysQuote, 100, 635);
+		
+		// TODO add each note to screen
+        for (int i = 0; i < notes.size(); i++) {
+            if (!notes.get(i).delete) {
+                notes.get(i).draw(g);
+            } else {
+                notes.remove(i);
+            }
+        }
+
+	}
+
 	public void actionPerformed(ActionEvent evt) {
+		// TODO set up all buttons reactions to being clicked
 
 		if (evt.getSource() == timerButton) {
-			// if the timer button was pressed, toggle on/off the pomodoro timer
 			Pomodoro.timerVis = Pomodoro.timerVis * -1;
 		} else if (evt.getSource() == checkListButton) {
-			// if the checklist button was pressed, toggle on/off the checklist
 			Tasklist.taskVis = Tasklist.taskVis * -1;
 		} else if (evt.getSource() == newNotesButton) {
-			// if the add a new note button was clicked, create a new sticky note
-			newBlankNote = new StickyNotes(c, frame);
-			notes.add(newBlankNote);
-		} else if (evt.getSource() == backGroundButtons[0]) {
-			// if the 1st background button was pressed, change the background to white
-			currentBg = 0;
-			frame.frameBgChange(Color.white);
+            // if the add a new note button was clicked, create a new sticky note
+            newBlankNote = new StickyNotes(c, frame);
+            notes.add(newBlankNote);
+        } else if (evt.getSource() == backGroundButtons[0]) {
+			rain = rain * -1;
+			currentBg = "Rain";
+
+			cafe = -1;
+			fire = -1;
+			bird = -1;
+			wave = -1;
 		} else if (evt.getSource() == backGroundButtons[1]) {
-			// if the 2nd background button was pressed, change the background to blue
-			currentBg = 1;
-			frame.frameBgChange(Color.blue);
+			cafe = cafe * -1;
+			currentBg = "Cafe";
+
+			rain = -1;
+			fire = -1;
+			bird = -1;
+			wave = -1;
 		} else if (evt.getSource() == backGroundButtons[2]) {
-			// if the 3rd background button was pressed, change the background to green
-			currentBg = 2;
-			frame.frameBgChange(Color.green);
+			fire = fire * -1;
+			currentBg = "Fire";
+
+			rain = -1;
+			cafe = -1;
+			bird = -1;
+			wave = -1;
 		} else if (evt.getSource() == backGroundButtons[3]) {
-			// if the 4th background button was pressed, change the background to magenta
-			currentBg = 3;
-			frame.frameBgChange(Color.magenta);
+			bird = bird * -1;
+			currentBg = "Bird";
+
+			rain = -1;
+			cafe = -1;
+			fire = -1;
+			wave = -1;
 		} else if (evt.getSource() == backGroundButtons[4]) {
-			// if the 5th background button was pressed, change the background to red
-			currentBg = 4;
-			frame.frameBgChange(Color.red);
+			wave = wave * -1;
+			currentBg = "Wave";
+
+			rain = -1;
+			cafe = -1;
+			bird = -1;
+			fire = -1;
 		}
 
 		repaint(); // update screen to show changes
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		// gets the x and y of the mouse and list when the mouse is pressed
-		for (int i = 0; i < notes.size(); i++) {
-			notes.get(i).mousePressed(e);
+        // gets the x and y of the mouse and list when the mouse is pressed
+        for (int i = 0; i < notes.size(); i++) {
+            notes.get(i).mousePressed(e);
+        }
+    }
+
+    // called from TomoPanel when the mouse is dragged
+    // and uses the x and y values at the original click
+    // to see if the list should be dragged
+    public void mouseDragged(MouseEvent e) {
+        for (int i = 0; i < notes.size(); i++) {
+            notes.get(i).mouseDragged(e);
+        }
+    }
+
+	public static String getQuote() {
+
+		String inputLine;
+		String quote = "";
+		int counter = 0;
+
+		try {
+			URL url = new URL("https://zenquotes.io/");
+			BufferedReader quoteReader = new BufferedReader(new InputStreamReader(url.openStream()));
+
+			while ((inputLine = quoteReader.readLine()) != null) {
+
+				if (counter == 173) {
+					quote = inputLine.replaceFirst("        <h4 class=\"display-5 font-italic\"><blockquote>&ldquo;",
+							"");
+					quote = "\"" + quote.substring(0, quote.indexOf("<br"));
+					quote = quote.replaceAll(".&rdquo; &mdash; <footer>", "\" — ");
+				}
+				counter++;
+			}
+			quoteReader.close();
+
+		} catch (Exception e) {
+
 		}
+		return quote;
 	}
 
-	// called from TomoPanel when the mouse is dragged
-	// and uses the x and y values at the original click
-	// to see if the list should be dragged
-	public void mouseDragged(MouseEvent e) {
-		for (int i = 0; i < notes.size(); i++) {
-			notes.get(i).mouseDragged(e);
-		}
-	}
-	
 }

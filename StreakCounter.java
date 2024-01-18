@@ -1,8 +1,7 @@
 /* Elaine Qian and Shiloh ZHeng
- * January 11nd, 2024
+ * January 17th, 2024
  * StreakCounter
  * This class reads and writes dates from an external file to keep track of the user's streak
- * Still a work in progress as this is does not work right now
 */
 
 //import statements
@@ -32,11 +31,17 @@ public class StreakCounter {
 	public static Calendar calendar;
 
 	public int curStreak;
+	int counter;
 
 	// constructor
 	public StreakCounter() {
 		file = new File("loginStreak.txt").getAbsoluteFile();
 		calendar = Calendar.getInstance();
+
+		todaysDate = getToday();
+		curStreak = calculateStreakLength();
+		writeDates();
+		counter = 0;
 	}
 
 	// get todays date and saves to variables
@@ -90,16 +95,16 @@ public class StreakCounter {
 
 		}
 	}
-	
+
 	public void draw(Graphics g) {
-		if (todaysDate != getToday()) {
+		if (!(todaysDate + "").equals(getToday() + "")) {
 			todaysDate = getToday();
 			curStreak = calculateStreakLength();
 			writeDates();
-		} 
-		g.setColor(Color.pink);
-		g.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		g.drawString("Current Streak: "+curStreak, 10, 635);
+			TomoMenu.todaysQuote = TomoMenu.getQuote();
+		}
+		g.setColor(Color.BLACK);
+		g.drawString("CURRENT STREAK: " + curStreak, 875, 400);
 	}
 
 }

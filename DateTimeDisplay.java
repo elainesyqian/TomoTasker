@@ -1,5 +1,5 @@
 /* Elaine Qian and Shiloh ZHeng
- * January 11nd, 2024
+ * January 17th, 2024
  * DateTimeDisplay
  * This class handles displaying the current date and time that the user is in to the screen
 */
@@ -31,7 +31,7 @@ public class DateTimeDisplay {
 	public void draw(Graphics g) {
 		
 		//set font
-		g.setColor(Color.black);
+		g.setColor(Color.WHITE);
 		g.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		//draws the necessary information to screen
