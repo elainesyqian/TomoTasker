@@ -28,7 +28,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 	public ArrayList<StickyNotes> notes = new ArrayList<StickyNotes>();
 	public StickyNotes newBlankNote;
-	
+
 	public int buttonRightShift;
 
 	public String currentBg;
@@ -37,11 +37,11 @@ public class TomoMenu extends JPanel implements ActionListener {
 	public Container c;
 	public TomoFrame frame;
 
-	public int rain, cafe, fire, bird, wave = -1;
+	public int rainVis, cafeVis, fireVis, birdVis, waveVis = -1;
 	File rainClip, cafeClip, fireClip, birdClip, waveClip;
 	AudioInputStream rainStream, cafeStream, fireStream, birdStream, waveStream;
 	Clip rainPlay, cafePlay, firePlay, birdPlay, wavePlay;
-	
+
 	public ImageIcon rainIcon, cafeIcon, fireIcon, birdIcon, waveIcon;
 	public Image rainImage, cafeImage, fireImage, birdImage, waveImage;
 
@@ -51,7 +51,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		this.frame = frame;
 
 		currentBg = "Rain";
-		rain = 1;
+		rainVis = 1;
 
 		timerButton = new JButton("TIMER");
 		checkListButton = new JButton("CHECKLIST");
@@ -86,7 +86,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			rainClip = new File("Rain.wav");
 			rainStream = AudioSystem.getAudioInputStream(rainClip);
 			rainPlay = AudioSystem.getClip();
-			rainPlay.open(rainStream); 
+			rainPlay.open(rainStream);
 
 			cafeClip = new File("Cafe.wav");
 			cafeStream = AudioSystem.getAudioInputStream(cafeClip);
@@ -107,56 +107,56 @@ public class TomoMenu extends JPanel implements ActionListener {
 			waveStream = AudioSystem.getAudioInputStream(waveClip);
 			wavePlay = AudioSystem.getClip();
 			wavePlay.open(waveStream);
-			
+
 		} catch (Exception e) {
 
 		}
-		
+
 		rainIcon = new ImageIcon("RainBG.png");
 		rainImage = rainIcon.getImage();
-		
+
 		cafeIcon = new ImageIcon("CafeBG.png");
 		cafeImage = cafeIcon.getImage();
-		
+
 		fireIcon = new ImageIcon("FireBG.png");
 		fireImage = fireIcon.getImage();
-		
+
 		birdIcon = new ImageIcon("BirdBG.png");
 		birdImage = birdIcon.getImage();
-		
+
 		waveIcon = new ImageIcon("WaveBG.png");
 		waveImage = waveIcon.getImage();
 
 	}
 
 	public void draw(Graphics g) {
-		
-		if(currentBg.equals("Rain")) {
+
+		if (currentBg.equals("Rain")) {
 			g.drawImage(rainImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
-			
+
 		} else if (currentBg.equals("Cafe")) {
 			g.drawImage(cafeImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
-			
+
 		} else if (currentBg.equals("Fire")) {
 			g.drawImage(fireImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
-			
+
 		} else if (currentBg.equals("Bird")) {
 			g.drawImage(birdImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
-			
+
 		} else if (currentBg.equals("Wave")) {
 			g.drawImage(waveImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
 		}
-			
+
 		// draws the rectangle
 		g.setColor(Color.PINK);
 		g.fillRect(850, 50, MENU_WIDTH, MENU_HEIGHT);
 
 		g.setColor(Color.BLACK);
 		if (currentBg.equals("Rain")) {
-			
+
 			g.drawString("Rainy Day", 875, 300);
 
-			if (rain == 1) {
+			if (rainVis == 1) {
 				try {
 					rainPlay.start(); // loop code
 				} catch (Exception e) {
@@ -167,20 +167,20 @@ public class TomoMenu extends JPanel implements ActionListener {
 				} catch (Exception e) {
 				}
 			}
-			
+
 			try {
 				cafePlay.stop();
 				firePlay.stop();
 				birdPlay.stop();
 				wavePlay.stop();
 			} catch (Exception e) {
-				
+
 			}
 
 		} else if (currentBg.equals("Cafe")) {
 			g.drawString("Cafe", 875, 300);
-			
-			if (cafe == 1) {
+
+			if (cafeVis == 1) {
 				try {
 					cafePlay.start(); // loop code
 				} catch (Exception e) {
@@ -191,20 +191,20 @@ public class TomoMenu extends JPanel implements ActionListener {
 				} catch (Exception e) {
 				}
 			}
-			
+
 			try {
 				rainPlay.stop();
 				firePlay.stop();
 				birdPlay.stop();
 				wavePlay.stop();
 			} catch (Exception e) {
-				
+
 			}
 
 		} else if (currentBg.equals("Fire")) {
 			g.drawString("Fireplace", 875, 300);
-			
-			if (fire == 1) {
+
+			if (fireVis == 1) {
 				try {
 					firePlay.start(); // loop code
 				} catch (Exception e) {
@@ -215,20 +215,20 @@ public class TomoMenu extends JPanel implements ActionListener {
 				} catch (Exception e) {
 				}
 			}
-			
+
 			try {
 				rainPlay.stop();
 				cafePlay.stop();
 				birdPlay.stop();
 				wavePlay.stop();
 			} catch (Exception e) {
-				
+
 			}
 
 		} else if (currentBg.equals("Bird")) {
 			g.drawString("Birds Chirping", 875, 300);
-			
-			if (bird == 1) {
+
+			if (birdVis == 1) {
 				try {
 					birdPlay.start(); // loop code
 				} catch (Exception e) {
@@ -239,20 +239,20 @@ public class TomoMenu extends JPanel implements ActionListener {
 				} catch (Exception e) {
 				}
 			}
-			
+
 			try {
 				rainPlay.stop();
 				cafePlay.stop();
 				firePlay.stop();
 				wavePlay.stop();
 			} catch (Exception e) {
-				
+
 			}
 
 		} else if (currentBg.equals("Wave")) {
 			g.drawString("Waves at the Beach", 875, 300);
-			
-			if (wave == 1) {
+
+			if (waveVis == 1) {
 				try {
 					wavePlay.start(); // loop code
 				} catch (Exception e) {
@@ -263,34 +263,33 @@ public class TomoMenu extends JPanel implements ActionListener {
 				} catch (Exception e) {
 				}
 			}
-			
+
 			try {
 				rainPlay.stop();
 				cafePlay.stop();
 				firePlay.stop();
 				birdPlay.stop();
 			} catch (Exception e) {
-				
-			}
-			
-		}
-		
 
-        g.setColor(Color.BLACK);
+			}
+
+		}
+
+		g.setColor(Color.BLACK);
 		g.drawString("CURRENT ROOM:", 875, 275);
 
 		g.setColor(Color.WHITE);
 		g.drawString("DAILY QUOTE:", 5, 635);
 		g.drawString(todaysQuote, 100, 635);
-		
+
 		// TODO add each note to screen
-        for (int i = 0; i < notes.size(); i++) {
-            if (!notes.get(i).delete) {
-                notes.get(i).draw(g);
-            } else {
-                notes.remove(i);
-            }
-        }
+		for (int i = 0; i < notes.size(); i++) {
+			if (!notes.get(i).delete) {
+				notes.get(i).draw(g);
+			} else {
+				notes.remove(i);
+			}
+		}
 
 	}
 
@@ -302,69 +301,69 @@ public class TomoMenu extends JPanel implements ActionListener {
 		} else if (evt.getSource() == checkListButton) {
 			Tasklist.taskVis = Tasklist.taskVis * -1;
 		} else if (evt.getSource() == newNotesButton) {
-            // if the add a new note button was clicked, create a new sticky note
-            newBlankNote = new StickyNotes(c, frame);
-            notes.add(newBlankNote);
-        } else if (evt.getSource() == backGroundButtons[0]) {
-			rain = rain * -1;
+			// if the add a new note button was clicked, create a new sticky note
+			newBlankNote = new StickyNotes(c, frame);
+			notes.add(newBlankNote);
+		} else if (evt.getSource() == backGroundButtons[0]) {
+			rainVis = rainVis * -1;
 			currentBg = "Rain";
 
-			cafe = -1;
-			fire = -1;
-			bird = -1;
-			wave = -1;
+			cafeVis = -1;
+			fireVis = -1;
+			birdVis = -1;
+			waveVis = -1;
 		} else if (evt.getSource() == backGroundButtons[1]) {
-			cafe = cafe * -1;
+			cafeVis = cafeVis * -1;
 			currentBg = "Cafe";
 
-			rain = -1;
-			fire = -1;
-			bird = -1;
-			wave = -1;
+			rainVis = -1;
+			fireVis = -1;
+			birdVis = -1;
+			waveVis = -1;
 		} else if (evt.getSource() == backGroundButtons[2]) {
-			fire = fire * -1;
+			fireVis = fireVis * -1;
 			currentBg = "Fire";
 
-			rain = -1;
-			cafe = -1;
-			bird = -1;
-			wave = -1;
+			rainVis = -1;
+			cafeVis = -1;
+			birdVis = -1;
+			waveVis = -1;
 		} else if (evt.getSource() == backGroundButtons[3]) {
-			bird = bird * -1;
+			birdVis = birdVis * -1;
 			currentBg = "Bird";
 
-			rain = -1;
-			cafe = -1;
-			fire = -1;
-			wave = -1;
+			rainVis = -1;
+			cafeVis = -1;
+			fireVis = -1;
+			waveVis = -1;
 		} else if (evt.getSource() == backGroundButtons[4]) {
-			wave = wave * -1;
+			waveVis = waveVis * -1;
 			currentBg = "Wave";
 
-			rain = -1;
-			cafe = -1;
-			bird = -1;
-			fire = -1;
+			rainVis = -1;
+			cafeVis = -1;
+			birdVis = -1;
+			fireVis = -1;
 		}
 
 		repaint(); // update screen to show changes
 	}
-	
-	public void mousePressed(MouseEvent e) {
-        // gets the x and y of the mouse and list when the mouse is pressed
-        for (int i = 0; i < notes.size(); i++) {
-            notes.get(i).mousePressed(e);
-        }
-    }
 
-    // called from TomoPanel when the mouse is dragged
-    // and uses the x and y values at the original click
-    // to see if the list should be dragged
-    public void mouseDragged(MouseEvent e) {
-        for (int i = 0; i < notes.size(); i++) {
-            notes.get(i).mouseDragged(e);
-        }
-    }
+	public void mousePressed(MouseEvent e) {
+		// gets the x and y of the mouse and list when the mouse is pressed
+		for (int i = 0; i < notes.size(); i++) {
+			notes.get(i).mousePressed(e);
+		}
+	}
+
+	// called from TomoPanel when the mouse is dragged
+	// and uses the x and y values at the original click
+	// to see if the list should be dragged
+	public void mouseDragged(MouseEvent e) {
+		for (int i = 0; i < notes.size(); i++) {
+			notes.get(i).mouseDragged(e);
+		}
+	}
 
 	public static String getQuote() {
 
