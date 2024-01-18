@@ -28,6 +28,7 @@ public class Tasklist extends JPanel implements ActionListener {
 	public TomoFrame frame;
 
 	public JButton addTask;
+	
 	// arraylist that contains the textfields of each task
 	public ArrayList<JTextField> tasks = new ArrayList<JTextField>();
 	public ArrayList<JCheckBox> checkBoxs = new ArrayList<JCheckBox>();
@@ -66,34 +67,36 @@ public class Tasklist extends JPanel implements ActionListener {
 		tasks.add(new JTextField("add more tasks!", 25));
 		
 		checkBoxs.add(new JCheckBox());
-
-		// adds the first task textfield to the container
 		
+		// creates a new panel
 		panel = new JPanel();
 		
+		// sets the layout of the panel
 		panel.setLayout(new GridBagLayout());
-		
 		gridLay = new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,GridBagConstraints.NORTH, GridBagConstraints.NORTH, new Insets(0, 0, 0, 0), 0, 0);
 		
+		// sets the position of the first checkbox
 		gridLay.gridx = 0;
 		gridLay.gridy = 0;
 		
+		// adds the first checkbox to the panel
 		panel.add(checkBoxs.get(0), gridLay);
 		
+		// sets the position of the first textfield
 		gridLay.gridx = 1;
 		gridLay.gridy = 0;
 		
+		// adds the first task textfield to the panel
 		panel.add(tasks.get(0), gridLay);
 		
-		// positions that task
-		//tasks.get(0).setBounds(listX + 5, listY + taskMoveDown, 200, 15);
-		
+		// creats a scrollabel pane to contain the tasklist, from the panel
 		scrollPart = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
         scrollPart.setMinimumSize(new Dimension(LIST_WIDTH , list_height));
         scrollPart.setMaximumSize(new Dimension(LIST_WIDTH , list_height + 200));
         scrollPart.setPreferredSize(new Dimension(LIST_WIDTH , list_height));
 		
+        // adds the scrollable pane to the container
 		c.add(scrollPart);
 
 		// sets the tasklist to be initially hidden
@@ -113,12 +116,15 @@ public class Tasklist extends JPanel implements ActionListener {
 
 			// sets the add task + button to be visible
 			addTask.setVisible(true);
+			
+			// show the scrollable pane
+			scrollPart.setVisible(true);
 
 			// adds the TO DO title text, and positions it
 			g.setColor(Color.BLACK);
 			g.drawString("TO DO", listX + 10, listY + 15);
 
-			addTask.setBounds(listX + LIST_WIDTH - 25, listY + 5, 20, 20);
+			addTask.setBounds(listX + LIST_WIDTH - 42, listY + 5, 42, 20);
 			
 			scrollPart.setBounds(listX, listY + 30, LIST_WIDTH, 125);
 
@@ -127,6 +133,9 @@ public class Tasklist extends JPanel implements ActionListener {
 		} else {
 			// hides the + task button
 			addTask.setVisible(false);
+			
+			// hide the scrollable pane
+			scrollPart.setVisible(false);
 			drawTasks();
 		}
 
@@ -144,13 +153,6 @@ public class Tasklist extends JPanel implements ActionListener {
 				// shows the current task
 				tasks.get(i).setVisible(true);
 				checkBoxs.get(i).setVisible(true);
-				// positions the current task
-				
-				//tasks.get(i).setBounds(listX + 23, listY + 25 + taskMoveDown, 200, 20);
-				//checkBoxs.get(i).setBounds(listX + 5, listY + 25 + taskMoveDown, 17, 17);
-				
-				// makes the next task position lower than the current one
-				taskMoveDown = taskMoveDown + 20;
 			} else {
 				// don't show the current task
 				tasks.get(i).setVisible(false);
@@ -158,13 +160,6 @@ public class Tasklist extends JPanel implements ActionListener {
 			}
 
 		}
-		
-		if (taskVis == 1) {
-			scrollPart.setVisible(true);
-		} else {
-			scrollPart.setVisible(false);
-		}
-
 	}
 
 	// called from TomoPanel when the mouse is pressed
@@ -222,40 +217,49 @@ public class Tasklist extends JPanel implements ActionListener {
 		
 		if (evt.getSource() == addTask) {
 			// if the add new task + button was pressed
-			// add a new text field to the screen and the array list of textfields
 			
+			// remove the current scrollable pane from the screen
 			c.remove(scrollPart);
 			
-			
+			//create a new checkbox
 			newBox = new JCheckBox();
 			
+			// add it to the arraylist of checkboxs
 			checkBoxs.add(newBox);
 			
+			// set the position of the new checkbox
 			gridLay.gridx = 0;
 			gridLay.gridy = checkBoxs.size() - 1;
 			
+			// adds it to the panel
 			panel.add(newBox, gridLay);
 			
+			// create a new JTextFieldd
 			newTask = new JTextField("type here", 25);
 			
-			
+			// add it to the arraylist of tasks
 			tasks.add(newTask);
 			
+			// set the position of the new task textbox
 			gridLay.gridy = tasks.size() - 1;
 			gridLay.gridx = 1;
 			
+			// add the new task textbox to the panel
 			panel.add(newTask, gridLay);
 			
-			
 			// update the list borders to fit the additional task
-			list_height = 70 + tasks.size() * 20;
+			list_height = tasks.size() * 25;
 			
+			// changes the size of the panel to fit the new task
 			panel.setPreferredSize(new Dimension(LIST_WIDTH, list_height));
 			
+			// creates a new scrollable pane based off the panel, with the new task
 			scrollPart = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+			// adds the new scrollable panel to the screen
 			c.add(scrollPart, 2);
 			
+			// refreshes the screen
 			scrollPart.revalidate();
 			this.revalidate();
 			c.revalidate();
