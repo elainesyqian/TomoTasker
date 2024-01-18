@@ -16,8 +16,8 @@ public class StickyNotes extends JPanel implements ActionListener{
 	public static final int STICKY_LENGTH = 200;
 	
 	// start location of sticky notes
-	public int stickyX = 350;
-	public int stickyY = 350;
+	public int stickyX = 475;
+	public int stickyY = 100;
 	
 	public JTextArea note;
 	int notesVis = 1;
