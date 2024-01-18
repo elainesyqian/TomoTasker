@@ -38,8 +38,6 @@ public class Tasklist extends JPanel implements ActionListener {
 	public int firstListX;
 	public int firstListY;
 
-	public int taskMoveDown = 20;
-
 	public static int taskVis;
 	
 	public static JPanel panel;
@@ -140,12 +138,11 @@ public class Tasklist extends JPanel implements ActionListener {
 		}
 
 	}
-
+	
+	// called from draw
+	// sets all the tasks to visible
 	public void drawTasks() {
-		// variable that controls the y position of each task text field
-		// so that each task is under the previous
-		taskMoveDown = 20;
-		// for every task in the tasklist
+		// for every task in the array of tasks
 		for (int i = 0; i < tasks.size(); i++) {
 
 			if (taskVis == 1) {
