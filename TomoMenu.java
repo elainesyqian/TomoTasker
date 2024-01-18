@@ -8,6 +8,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -25,6 +27,9 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 	// array of possible quotes
 	String[] dailyQuote = { "wow, awesome", "wow2", "epic, so epic", "w" };
+	
+	public ArrayList<StickyNotes> notes = new ArrayList<StickyNotes>();
+	public StickyNotes newBlankNote;
 
 	int todaysQuoteIndex;
 	int buttonRightShift;
@@ -108,6 +113,15 @@ public class TomoMenu extends JPanel implements ActionListener {
 		} else if (currentBg == 4) {
 			g.drawString("CLOSEUP OF AN APPLE", 875, 300);
 		}
+		
+		// TODO add each note to screen
+		for (int i = 0; i < notes.size(); i++) {
+			if (!notes.get(i).delete) {
+				notes.get(i).draw(g);
+			} else {
+				notes.remove(i);
+			}
+		}
 
 		// adds text that adds a quote on screen
 		g.drawString("DAILY QUOTE:", 875, 400);
@@ -125,6 +139,10 @@ public class TomoMenu extends JPanel implements ActionListener {
 		} else if (evt.getSource() == checkListButton) {
 			// if the checklist button was pressed, toggle on/off the checklist
 			Tasklist.taskVis = Tasklist.taskVis * -1;
+		} else if (evt.getSource() == newNotesButton) {
+			// if the add a new note button was clicked, create a new sticky note
+			newBlankNote = new StickyNotes(c, frame);
+			notes.add(newBlankNote);
 		} else if (evt.getSource() == backGroundButtons[0]) {
 			// if the 1st background button was pressed, change the background to white
 			currentBg = 0;
@@ -149,5 +167,21 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 		repaint(); // update screen to show changes
 	}
+	
+	public void mousePressed(MouseEvent e) {
+		// gets the x and y of the mouse and list when the mouse is pressed
+		for (int i = 0; i < notes.size(); i++) {
+			notes.get(i).mousePressed(e);
+		}
+	}
 
+	// called from TomoPanel when the mouse is dragged
+	// and uses the x and y values at the original click
+	// to see if the list should be dragged
+	public void mouseDragged(MouseEvent e) {
+		for (int i = 0; i < notes.size(); i++) {
+			notes.get(i).mouseDragged(e);
+		}
+	}
+	
 }
