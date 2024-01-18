@@ -4,10 +4,9 @@
  * This class creates a sticky note, which can be typed on, dragged around, and deleted
 */
 
+//import statements
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.event.MouseEvent;
-
 import javax.swing.*;
 
 public class StickyNotes extends JPanel implements ActionListener{
