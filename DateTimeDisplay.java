@@ -1,4 +1,4 @@
-/* Elaine Qian and Shiloh ZHeng
+/* Elaine Qian and Shiloh Zheng
  * January 17th, 2024
  * DateTimeDisplay
  * This class handles displaying the current date and time that the user is in to the screen
