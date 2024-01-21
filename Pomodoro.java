@@ -22,8 +22,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public static int pomoY = 100;
 
 	// buttons
-	public JButton startTimer;
-	public JButton pauseTimer;
+	public JButton controlTimer;
 	public JButton resetTimer;
 	public JButton closeButton;
 
@@ -54,6 +53,8 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public int firstMouseY;
 	public int firstPomoX;
 	public int firstPomoY;
+	
+	public ImageIcon x, start, pause, reset;
 
 	// constructor
 	public Pomodoro(Container c) {
@@ -69,22 +70,35 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 		// buttons setup
 		// initializing
-		startTimer = new JButton("START");
-		pauseTimer = new JButton("PAUSE");
+		
+		
+		start = new ImageIcon(new ImageIcon("play.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
+		pause = new ImageIcon(new ImageIcon("pause.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
+		
+		controlTimer = new JButton("START");
+		c.add(controlTimer);
+		controlTimer.addActionListener(this);
+		controlTimer.setFocusable(false);
+		controlTimer.setMargin(new Insets(20, 30, 20, 20));
+		controlTimer.setIcon(start);
+		
+		reset = new ImageIcon(new ImageIcon("reset.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
 		resetTimer = new JButton("RESET");
-		closeButton = new JButton("X");
-
-		// adding to screen
-		c.add(startTimer);
-		c.add(pauseTimer);
 		c.add(resetTimer);
-		c.add(closeButton);
-
-		// adding actionListiner to know when clicked
-		startTimer.addActionListener(this);
-		pauseTimer.addActionListener(this);
 		resetTimer.addActionListener(this);
+		resetTimer.setFocusable(false);
+		resetTimer.setMargin(new Insets(20, 30, 20, 20));
+		resetTimer.setIcon(reset);
+		
+		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+		closeButton = new JButton("X");
+		c.add(closeButton);
 		closeButton.addActionListener(this);
+		closeButton.setFocusable(false);
+		closeButton.setMargin(new Insets(20, 30, 20, 20));
+		closeButton.setIcon(x);
+		
+		
 
 		// add the timer type dropdown so that the user can choose which timer they use
 		changeTimer = new JComboBox(timerOptions);
@@ -122,17 +136,14 @@ public class Pomodoro extends JPanel implements ActionListener {
 			g.drawString("Current Alert Sound:", pomoX + 70, pomoY + 170);
 
 			// set buttons and dropdowns to be visible and their location
-			startTimer.setVisible(true);
-			startTimer.setBounds(pomoX + 5, pomoY + 40, 75, 30);
-
-			pauseTimer.setVisible(true);
-			pauseTimer.setBounds(pomoX + 5, pomoY + 70, 75, 30);
+			controlTimer.setVisible(true);
+			controlTimer.setBounds(pomoX + 5, pomoY + 35, 45, 45);
 
 			resetTimer.setVisible(true);
-			resetTimer.setBounds(pomoX + 5, pomoY + 110, 75, 30);
+			resetTimer.setBounds(pomoX + 5, pomoY + 85, 45, 45);
 			
 			closeButton.setVisible(true);
-			closeButton.setBounds(pomoX + POMO_WIDTH - 42, pomoY + 5, 35, 20);
+			closeButton.setBounds(pomoX + POMO_WIDTH - 32, pomoY + 1, 30, 30);
 
 			changeTimer.setVisible(true);
 			changeTimer.setBounds(pomoX + 225, pomoY + 65, 125, 30);
@@ -146,9 +157,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 			// draws the time left
 			if (sec < 10) {
-				g.drawString(min + ":0" + sec, pomoX + 85, pomoY + 100);
+				g.drawString(min + ":0" + sec, pomoX + 65, pomoY + 100);
 			} else {
-				g.drawString(min + ":" + sec, pomoX + 85, pomoY + 100);
+				g.drawString(min + ":" + sec, pomoX + 65, pomoY + 100);
 			}
 
 			// if timer has finished and has not played the alert yet
@@ -193,8 +204,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 		} else {
 
 			// set all buttons', dropdowns' visibility and play to false
-			startTimer.setVisible(false);
-			pauseTimer.setVisible(false);
+			controlTimer.setVisible(false);
 			resetTimer.setVisible(false);
 			closeButton.setVisible(false);
 			changeTimer.setVisible(false);
@@ -208,13 +218,15 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 
 		// if start button is clicked set play to true and playedAlert to false
-		if (evt.getSource() == startTimer) {
-			play = true;
-			playAlert = false;
-
-			// set play to false if timer is paused
-		} else if (evt.getSource() == pauseTimer) {
-			play = false;
+		if (evt.getSource() == controlTimer) {
+			if (play) {
+				play = false;
+				controlTimer.setIcon(start);
+			} else {
+				play = true;
+				playAlert = false;
+				controlTimer.setIcon(pause);
+			}
 
 		// if reset button is clicked set play to false, sec to 0, and min to
 		// respective values based on which timer was last used
@@ -230,6 +242,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			}
 			sec = 0;
 			play = false;
+			controlTimer.setIcon(start);
 
 		} else if (evt.getSource() == closeButton) {
 			timerVis = -1;
@@ -252,6 +265,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			//set sec to 0 and play to false
 			sec = 0;
 			play = false;
+			controlTimer.setIcon(start);
 
 		//if alert dropdown is clicked
 		} else if (evt.getSource() == changeAlert) {
