@@ -46,11 +46,11 @@ public class StickyNotes extends JPanel implements ActionListener{
 		note = new JTextArea(1, STICKY_LENGTH);
 		
 		// creates an X close button for the sticky note
-		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		closeButton = new JButton("X");
 		closeButton.addActionListener(this);
 		closeButton.setFocusable(false);
-		closeButton.setMargin(new Insets(20, 30, 20, 20));
+		closeButton.setMargin(new Insets(20, 33, 21, 20));
 		closeButton.setIcon(x);
 		c.add(closeButton, 0);
 		
@@ -88,7 +88,7 @@ public class StickyNotes extends JPanel implements ActionListener{
 			// adds the JScrollPane with the text area
 			scrollPart.setBounds(stickyX, stickyY + 30 ,  STICKY_LENGTH,  STICKY_LENGTH-30);
 			// adds the close button
-			closeButton.setBounds(stickyX +  STICKY_LENGTH - 32, stickyY + 1,  30,  30);
+			closeButton.setBounds(stickyX +  STICKY_LENGTH - 27, stickyY + 5,  21,  21);
 		} else {
 			// hides the parts of the sticky note
 			scrollPart.setVisible(false);
