@@ -1,5 +1,5 @@
 /* Elaine Qian and Shiloh Zheng
- * January 17th, 2024
+ * January 21th, 2024
  * TomoMenu
  * This class creates the control menu of the Tomotasker, with buttons to 
  * open new windows/objects that have different functions as well as controls the Sticky Notes
@@ -77,7 +77,9 @@ public class TomoMenu extends JPanel implements ActionListener {
 		currentBg = "Rain";
 		rainVis = 1;
 		
+		// getting the file with the saved sticky notes
 		file = new File("notes.txt").getAbsoluteFile();
+		// reading all the saved notes
         readSaved();
 
 		timerSymbol = new ImageIcon(
@@ -409,11 +411,12 @@ public class TomoMenu extends JPanel implements ActionListener {
 		return quote;
 	}
 	
+	// reads the saved information about the sticky notes
+	// and adds the saved notes to the array of sticky notes
 	public void readSaved() {
         String str;
         String allText = "";
         StickyNotes newNote;
-        int linesRead = 0;
 
         try {
             //setup buffered reader to read from the txt file
@@ -421,39 +424,59 @@ public class TomoMenu extends JPanel implements ActionListener {
 
             //while the next line has content
             while ((str = br.readLine()) != null) {
+            	// if the line isn't a dividing character
+            	// which splits the content of the sticky notes from it's coordinates
                 if (!str.equals("÷")) {
                     if (!allText.equals("")) {
+                    	// if the current text for the note isn't empty
+                    	// move to the next line and add the next part of the note
                         allText = allText + "\n" + str;
                     } else {
+                    	// otherwise, stay on the current line
+                    	// and add the next part of the note
                         allText = allText + str;
                     }
                 } else {
+                	// if the dividing character is reached
+                	// the next two lines are the coordinates of the sticky note
+                	
+                	// create a new note with the text read in
                     newNote = new StickyNotes(c, frame);
                     newNote.note.setText(allText);
+                    
+                    // use the next two lines, which contain the coordinates of the note
+                    // to position it on screen
                     str = br.readLine();
                     newNote.stickyX = Integer.parseInt(str);
                     str = br.readLine();
                     newNote.stickyY = Integer.parseInt(str);
+                    
+                    // add the newly creates note to the array list of sticky notes
                     notes.add(newNote);
-
+                    
+                    // clear the text to add to the next note
                     allText = "";
                 }
-                linesRead++;
             }
 
             //closes buffered reader
             br.close();
         } catch (Exception e) {
             // nothing will happen if crashes
-            System.out.println("uh oh");
         }
     }
-
+	
+	// writes the content of the sticky notes and it's coordinates to a file
     public void writeToSave() {
         try {
+        	// creates a bufferedwriter to write content to the file
             bw = new BufferedWriter(new FileWriter(file));
+            // for every sticky note in the array of notes
             for (int i = 0; i < notes.size(); i++) {
+            	// write it's contents into a file
+            	//and end it with line with an untypeable character
                 bw.write(notes.get(i).note.getText() + "\n÷\n");
+                // save the x and y coordinates of the sticky note on the next two lines
                 bw.write(notes.get(i).stickyX + "\n" + notes.get(i).stickyY + "\n");
             }
             bw.close();
