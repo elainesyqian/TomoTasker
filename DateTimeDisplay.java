@@ -32,7 +32,7 @@ public class DateTimeDisplay {
 		
 		//set font
 		g.setColor(Color.WHITE);
-		g.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		g.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		
 		//draws the necessary information to screen
 		g.drawString(formattedDate, 10, 30);
