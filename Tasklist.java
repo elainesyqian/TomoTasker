@@ -131,6 +131,9 @@ public class Tasklist extends JPanel implements ActionListener {
 
 	// draws the parts of the tasklist
 	public void draw(Graphics g) {
+		
+		g.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		
 		// if the tasklist is currently supposed to be visible
 		if (taskVis == 1) {
 			// draws the rectangle border
@@ -152,7 +155,7 @@ public class Tasklist extends JPanel implements ActionListener {
 
 			// adds the TO DO title text, and positions it
 			g.setColor(Color.BLACK);
-			g.drawString("TO DO", listX + 10, listY + 15);
+			g.drawString("TO DO", listX + 10, listY + 21);
 
 			// calls a method that will add all the tasks on screen
 			drawTasks();
@@ -174,6 +177,8 @@ public class Tasklist extends JPanel implements ActionListener {
 	public void drawTasks() {
 		// for every task in the array of tasks
 		for (int i = 0; i < tasks.size(); i++) {
+			
+			tasks.get(i).setFont(new Font("Tahoma", Font.PLAIN, 12));
 
 			if (taskVis == 1) {
 				// if the tasklist is supposed to be visible right now
