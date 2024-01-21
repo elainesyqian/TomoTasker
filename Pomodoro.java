@@ -1,353 +1,159 @@
-/* Elaine Qian and Shiloh ZHeng
+/* Elaine Qian and Shiloh Zheng
  * January 17th, 2024
- * Pomodoro
- * This class handles all aspects of the Pomodoro timer feature
+ * StickyNotes
+ * This class creates a sticky note, which can be typed on, dragged around, and deleted
 */
 
 //import statements
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import javax.sound.sampled.*;
+
 import javax.swing.*;
 
-public class Pomodoro extends JPanel implements ActionListener {
-
-	// sizing of the timer
-	public static final int POMO_WIDTH = 350;
-	public static final int POMO_HEIGHT = 180;
-
-	// x and y coordinates of the timer
-	public static int pomoX = 100;
-	public static int pomoY = 100;
-
-	// buttons
-	public JButton controlTimer;
-	public JButton resetTimer;
-	public JButton closeButton;
-
-	// other variable declarations
-	public Container c;
-	public static int timerVis;
-
-	public int min, sec;
-
-	public long initial;
-	public long remaining;
-
-	public boolean play, playAlert, changedAlert = false;
-
-	// dropdown for timer options
-	String[] timerOptions = { "Work", "Short Break", "Long Break" };
-	JComboBox changeTimer;
-	String currentTimer;
-
-	// dropdown for alert options
-	String[] alertOptions = { "Apex", "Bells", "Electronic", "Flute", "Marimba" };
-	JComboBox changeAlert;
-	String currentAlert;
-
-	// variables for dragging
-	public boolean mouseDragging;
+public class StickyNotes extends JPanel implements ActionListener{
+	
+	// creates the dimensions of the sticky note
+	public static final int STICKY_LENGTH = 200;
+	
+	// start location of sticky notes
+	public int stickyX = 475;
+	public int stickyY = 100;
+	
+	public JTextArea note;
+	int notesVis = 1;
+	boolean delete = false;
+	
+	// boolean that saves whether or not the mouse is currently dragging the note
+	public boolean mouseDragging = false;
+	
 	public int firstMouseX;
 	public int firstMouseY;
-	public int firstPomoX;
-	public int firstPomoY;
+	public int firstNoteX;
+	public int firstNoteY;
 	
-	public ImageIcon x, start, pause, reset;
-
-	// constructor
-	public Pomodoro(Container c) {
-		// setup
-		this.c = c;
-
-		// starting timer values
-		min = 40;
-		sec = 0;
-
-		timerVis = -1;
-		currentAlert = "Apex.wav";
-
-		// buttons setup
-		// initializing
+	public JScrollPane scrollPart;
+	public JButton closeButton;
+	
+	public ImageIcon x;
+	
+	public StickyNotes(Container c, TomoFrame frame) {
+		// constructor of StickyNotes
 		
+		// creates a new JTextArea, which is the typeable area of the stickynote
+		note = new JTextArea(1, STICKY_LENGTH);
 		
-		start = new ImageIcon(new ImageIcon("play.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
-		pause = new ImageIcon(new ImageIcon("pause.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
-		
-		controlTimer = new JButton("START");
-		c.add(controlTimer);
-		controlTimer.addActionListener(this);
-		controlTimer.setFocusable(false);
-		controlTimer.setMargin(new Insets(20, 30, 20, 20));
-		controlTimer.setIcon(start);
-		
-		reset = new ImageIcon(new ImageIcon("reset.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
-		resetTimer = new JButton("RESET");
-		c.add(resetTimer);
-		resetTimer.addActionListener(this);
-		resetTimer.setFocusable(false);
-		resetTimer.setMargin(new Insets(20, 30, 20, 20));
-		resetTimer.setIcon(reset);
-		
-		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+		// creates an X close button for the sticky note
+		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		closeButton = new JButton("X");
-		c.add(closeButton);
 		closeButton.addActionListener(this);
 		closeButton.setFocusable(false);
-		closeButton.setMargin(new Insets(20, 30, 20, 20));
+		closeButton.setMargin(new Insets(20, 33, 21, 20));
 		closeButton.setIcon(x);
+		c.add(closeButton, 0);
 		
+		// sets up the JTextArea so that words wrap
+		// around to a new line when exceeding the edge
+		note.setLineWrap(true); 
+		note.setWrapStyleWord(true);
 		
-
-		// add the timer type dropdown so that the user can choose which timer they use
-		changeTimer = new JComboBox(timerOptions);
-		c.add(changeTimer);
-		changeTimer.addActionListener(this);
-
-		// add the alert dropdown so that the user can choose which alert they would
-		// like to use
-		changeAlert = new JComboBox(alertOptions);
-		c.add(changeAlert);
-		changeAlert.addActionListener(this);
+		note.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		// creates insets for the JTextArea so the text doesn't touch the edges
+		note.setMargin(new Insets(3, 3, 3, 3));
+		
+		scrollPart = new JScrollPane(note);
+		c.add(scrollPart, 0);
+		
+		// refreshes and updates the container
+		c.revalidate();
+		c.repaint();
+		
+		// sets the note to visible when created
+		notesVis = 1;
 	}
-
-	// this method takes care of all things drawn to the screen and keeping track of
-	// time
+	
+	// draws the parts of the sticky note
 	public void draw(Graphics g) {
-
-		// if the timer is open or 'visible'
-		if (timerVis == 1) {
-			// draws general rectangle outline
-			g.setColor(Color.WHITE);
-			g.fillRect(pomoX, pomoY, POMO_WIDTH, POMO_HEIGHT);
-
-			// draws the title bar and background
+		// if the sticky note is currently supposed to be visible
+		if (notesVis == 1) {
+			// creates the title tab that can be dragged
 			g.setColor(Color.PINK);
-			g.fillRect(pomoX, pomoY, POMO_WIDTH, 30);
-
-			// window text
-			g.setColor(Color.black);
-			g.setFont(new Font("Times New Roman", Font.PLAIN, 17));
-			g.drawString("TIMER", pomoX + 20, pomoY + 20);
-
-			// text on screen
-			g.drawString("Current Timer:", pomoX + 230, pomoY + 60);
-			g.drawString("Current Alert Sound:", pomoX + 70, pomoY + 170);
-
-			// set buttons and dropdowns to be visible and their location
-			controlTimer.setVisible(true);
-			controlTimer.setBounds(pomoX + 5, pomoY + 35, 45, 45);
-
-			resetTimer.setVisible(true);
-			resetTimer.setBounds(pomoX + 5, pomoY + 85, 45, 45);
+			g.fillRect(stickyX, stickyY, STICKY_LENGTH, 30);
 			
-			closeButton.setVisible(true);
-			closeButton.setBounds(pomoX + POMO_WIDTH - 32, pomoY + 1, 30, 30);
-
-			changeTimer.setVisible(true);
-			changeTimer.setBounds(pomoX + 225, pomoY + 65, 125, 30);
-
-			changeAlert.setVisible(true);
-			changeAlert.setBounds(pomoX + 220, pomoY + 150, 130, 30);
-
-			// sets colour for timer display
-			g.setColor(Color.pink);
-			g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
-
-			// draws the time left
-			if (sec < 10) {
-				g.drawString(min + ":0" + sec, pomoX + 65, pomoY + 100);
-			} else {
-				g.drawString(min + ":" + sec, pomoX + 65, pomoY + 100);
-			}
-
-			// if timer has finished and has not played the alert yet
-			if (playAlert) {
-
-				// repaint to the screen so displays 0:00
-				sec = 0;
-				g.drawString("0:00", 190, 170);
-				repaint();
-
-				// play alert
-				playSound(currentAlert);
-
-				// set playAlert to false the audio doesn't overlap
-				playAlert = false;
-
-				// set play to false so no negative numbers
-				play = false;
-			}
-
-			// keeps track of time left
-			// if the timer is on play mode and 1 second has passed
-			if (play && System.currentTimeMillis() - initial >= 1000 && (min > 0 || sec >= 0)) {
-				initial = System.currentTimeMillis();
-				// decrease seconds variable by 1 for the 1 second passed
-				sec--;
-
-				// if seconds was 0 and decreases to -1
-				if (sec < 0 && min != 0) {
-					// set seconds to 59 and decrease minutes by 1
-					sec = 59;
-					min--;
-				}
-
-				// set playAlert to true when seconds reaches -1 (workaround, bc otherwise, the
-				// alert goes off when displaying 0:01)
-				if (sec == -1 && min == 0) {
-					playAlert = true;
-				}
-			}
-			// if timer is closed and not visible
+			// draws the rectangle border
+			g.setColor(Color.BLACK);
+			g.drawRect(stickyX, stickyY, STICKY_LENGTH, STICKY_LENGTH);
+			
+			// adds the JScrollPane with the text area
+			scrollPart.setBounds(stickyX, stickyY + 30 ,  STICKY_LENGTH,  STICKY_LENGTH-30);
+			// adds the close button
+			closeButton.setBounds(stickyX +  STICKY_LENGTH - 27, stickyY + 5,  21,  21);
 		} else {
-
-			// set all buttons', dropdowns' visibility and play to false
-			controlTimer.setVisible(false);
-			resetTimer.setVisible(false);
+			// hides the parts of the sticky note
+			scrollPart.setVisible(false);
 			closeButton.setVisible(false);
-			changeTimer.setVisible(false);
-			changeAlert.setVisible(false);
-			play = false;
+			note.setVisible(false);
+			
+			// marks the sticky note for deletion by TomoMenu
+			delete = true;
 		}
 
 	}
+	
+		// called from TomoMenu when the mouse is pressed
+		// saves the x and y values of the mouse press and note
+		public void mousePressed(MouseEvent e) {
+			// gets the x and y of the mouse and list when the mouse is pressed
+			firstMouseX = e.getX();
+			firstMouseY = e.getY();
+			firstNoteX = stickyX;
+			firstNoteY = stickyY;
+		}
 
-	// this method takes care all logistics when a button is clicked
-	public void actionPerformed(ActionEvent evt) {
-
-		// if start button is clicked set play to true and playedAlert to false
-		if (evt.getSource() == controlTimer) {
-			if (play) {
-				play = false;
-				controlTimer.setIcon(start);
+		// called from TomoMenu when the mouse is dragged
+		// and uses the x and y values at the original click
+		// to see if the note should be dragged
+		public void mouseDragged(MouseEvent e) {
+			// checks if the x and y values of the mouse fall within the draggable title tab when the mouse
+			// was first pressed down
+			if (firstMouseX >= firstNoteX && firstMouseX <= firstNoteX + STICKY_LENGTH && firstMouseY >= firstNoteY
+					&& firstMouseY <= firstNoteY + 30) {
+				// if the mouse was in the title tab, allow for the note to be dragged
+				mouseDragging = true;
 			} else {
-				play = true;
-				playAlert = false;
-				controlTimer.setIcon(pause);
+				// otherwise, don't drag the note
+				mouseDragging = false;
 			}
 
-		// if reset button is clicked set play to false, sec to 0, and min to
-		// respective values based on which timer was last used
-		} else if (evt.getSource() == resetTimer) {
-			currentTimer = changeTimer.getSelectedItem() + "";
+			if (mouseDragging) {
+				// if the note is currently being dragged, make it follow the mouse
+				stickyX = e.getX() - (firstMouseX - firstNoteX);
+				stickyY = e.getY() - (firstMouseY - firstNoteY);
+				
+				// if the mouse drags the title tab offscreen, move it back onscreen
+				if (stickyX < 0) {
+					stickyX = 0;
+				} else if (stickyX > TomoPanel.PANEL_WIDTH - STICKY_LENGTH) {
+					stickyX = TomoPanel.PANEL_WIDTH - STICKY_LENGTH;
+				}
 
-			if (currentTimer.equals("Work")) {
-				min = 40;
-			} else if (currentTimer.equals("Short Break")) {
-				min = 5;
-			} else if (currentTimer.equals("Long Break")) {
-				min = 15;
+				if (stickyY < 0) {
+					stickyY = 0;
+				} else if (stickyY + 30 > TomoPanel.PANEL_HEIGHT) {
+					stickyY = TomoPanel.PANEL_HEIGHT - 30;
+				}
+
+				repaint(); // updates screen to show changes
 			}
-			sec = 0;
-			play = false;
-			controlTimer.setIcon(start);
-
-		} else if (evt.getSource() == closeButton) {
-			timerVis = -1;
-			
-		//if timer dropdown is clicked	
-		} else if (evt.getSource() == changeTimer) {
-
-			//change the current timer to what is selected
-			currentTimer = changeTimer.getSelectedItem() + "";
-
-			//set min to respective values based on timer type
-			if (currentTimer.equals("Work")) {
-				min = 40;
-			} else if (currentTimer.equals("Short Break")) {
-				min = 5;
-			} else if (currentTimer.equals("Long Break")) {
-				min = 15;
-			}
-			
-			//set sec to 0 and play to false
-			sec = 0;
-			play = false;
-			controlTimer.setIcon(start);
-
-		//if alert dropdown is clicked
-		} else if (evt.getSource() == changeAlert) {
-			
-			//change the current alert to what is selected
-			currentAlert = changeAlert.getSelectedItem() + ".wav";
-			
-			//play the alert that has been chosen so that the user knows what it sounds like
-			playSound(currentAlert);
 		}
-
-		repaint(); // updates screen to show changes
-	}
-
-	// this method plays audio
-	public static void playSound(String fileName) {
-
-		// try-catch to prevent crashing
-		try {
-
-			// setup code to open the file
-			File songClip = new File(fileName);
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(songClip);
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioStream);
-
-			// start playing
-			clip.start();
-
-		} catch (Exception e) {
-			// nothing will happen if crashes
+		
+		// detects when a button was pressed, and gets the ActionEvent
+		public void actionPerformed(ActionEvent evt) {
+			//inverts the current visibility
+			notesVis = notesVis*-1;
 		}
-
-	}
-
-	// called from TomoPanel when the mouse is pressed
-	// saves the x and y values of the mouse press and timer
-	public void mousePressed(MouseEvent e) {
-		// gets the x and y of the mouse and list when the mouse is pressed
-		firstMouseX = e.getX();
-		firstMouseY = e.getY();
-		firstPomoX = pomoX;
-		firstPomoY = pomoY;
-	}
-
-	// called from TomoPanel when the mouse is dragged
-	// and uses the x and y values at the original click
-	// to see if the timer should be dragged
-	public void mouseDragged(MouseEvent e) {
-
-		// checks if the x and y values of the mouse fall within the draggable title tab
-		// when the mouse
-		// was first pressed down
-		if (firstMouseX >= firstPomoX && firstMouseX <= firstPomoX + POMO_WIDTH && firstMouseY >= firstPomoY
-				&& firstMouseY <= firstPomoY + 30) {
-			// if the mouse was in the title tab, allow for the list to be dragged
-			mouseDragging = true;
-		} else {
-			// otherwise, don't drag the list
-			mouseDragging = false;
-		}
-
-		if (mouseDragging) {
-			// if the timer is currently being dragged, make it follow the mouse
-			pomoX = e.getX() - (firstMouseX - firstPomoX);
-			pomoY = e.getY() - (firstMouseY - firstPomoY);
-
-			// if the mouse drags the title tab offscreen, move it back onscreen
-			if (pomoX < 0) {
-				pomoX = 0;
-			} else if (pomoX > TomoPanel.PANEL_WIDTH - POMO_WIDTH) {
-				pomoX = TomoPanel.PANEL_WIDTH - POMO_WIDTH;
-			}
-
-			if (pomoY < 0) {
-				pomoY = 0;
-			} else if (pomoY + 30 > TomoPanel.PANEL_HEIGHT) {
-				pomoY = TomoPanel.PANEL_HEIGHT - 30;
-			}
-
-			repaint(); // updates screen to show changes
-		}
-	}
-
+		
 }
