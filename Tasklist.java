@@ -71,20 +71,20 @@ public class Tasklist extends JPanel implements ActionListener {
 		this.c = c;
 		this.frame = frame;
 
-		plus = new ImageIcon(new ImageIcon("plus.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+		plus = new ImageIcon(new ImageIcon("plus.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		addTask = new JButton("+");
 		c.add(addTask);
 		addTask.addActionListener(this);
 		addTask.setFocusable(false);
-		addTask.setMargin(new Insets(20, 30, 20, 20));
+		addTask.setMargin(new Insets(20, 33, 21, 20));
 		addTask.setIcon(plus);
 		
-		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		closeButton = new JButton("X");
 		c.add(closeButton);
 		closeButton.addActionListener(this);
 		closeButton.setFocusable(false);
-		closeButton.setMargin(new Insets(20, 30, 20, 20));
+		closeButton.setMargin(new Insets(20, 33, 21, 20));
 		closeButton.setIcon(x);
 
 		// adds a first task to the list so it doesn't start empty
@@ -141,10 +141,10 @@ public class Tasklist extends JPanel implements ActionListener {
 
 			// sets the add task + button to be visible
 			addTask.setVisible(true);
-			addTask.setBounds(listX + LIST_WIDTH - 64, listY + 1, 30, 30);
+			addTask.setBounds(listX + LIST_WIDTH - 54, listY + 5, 21, 21);
 
 			closeButton.setVisible(true);
-			closeButton.setBounds(listX + LIST_WIDTH - 32, listY + 1, 30, 30);
+			closeButton.setBounds(listX + LIST_WIDTH - 27, listY + 5, 21, 21);
 
 			// show the scrollable pane
 			scrollPart.setVisible(true);
