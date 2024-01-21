@@ -100,6 +100,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		// creates, adds, positions the checklist button on the screen and adds an
 		// action listener
 		checkListButton = new JButton("CHECKLIST");
+		checkListButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		c.add(checkListButton);
 		checkListButton.setBounds(995, 75, 90, 90);
 		checkListButton.addActionListener(this);
@@ -110,6 +111,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		// creates, adds, positions the newNotes button on the screen and adds an action
 		// listener
 		newNotesButton = new JButton("ADD A NEW NOTE");
+		newNotesButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		c.add(newNotesButton);
 		newNotesButton.setBounds(875, 195, 255, 50);
 		newNotesButton.addActionListener(this);
@@ -195,6 +197,8 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 	// draws parts of the menu, the background, and controls ambient sound
 	public void draw(Graphics g) {
+		
+		g.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
 		// draws the respective backgrounds based off of which room the user is in
 		// must draw the background images first so that the other stuff appears on top
