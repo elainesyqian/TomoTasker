@@ -7,6 +7,10 @@
 //import statements
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+
 import javax.swing.*;
 
 public class StickyNotes extends JPanel implements ActionListener{
@@ -81,7 +85,7 @@ public class StickyNotes extends JPanel implements ActionListener{
 			// adds the JScrollPane with the text area
 			scrollPart.setBounds(stickyX, stickyY + 30 ,  STICKY_LENGTH,  STICKY_LENGTH-30);
 			// adds the close button
-			closeButton.setBounds(stickyX +  STICKY_LENGTH - 42, stickyY + 5,  42,  20);
+			closeButton.setBounds(stickyX +  STICKY_LENGTH - 45, stickyY + 5,  42,  20);
 		} else {
 			// hides the parts of the sticky note
 			scrollPart.setVisible(false);
