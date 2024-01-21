@@ -59,6 +59,8 @@ public class StickyNotes extends JPanel implements ActionListener{
 		note.setLineWrap(true); 
 		note.setWrapStyleWord(true);
 		
+		note.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
 		// creates insets for the JTextArea so the text doesn't touch the edges
 		note.setMargin(new Insets(3, 3, 3, 3));
 		
