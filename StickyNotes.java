@@ -37,6 +37,8 @@ public class StickyNotes extends JPanel implements ActionListener{
 	public JScrollPane scrollPart;
 	public JButton closeButton;
 	
+	public ImageIcon x;
+	
 	public StickyNotes(Container c, TomoFrame frame) {
 		// constructor of StickyNotes
 		
@@ -44,8 +46,13 @@ public class StickyNotes extends JPanel implements ActionListener{
 		note = new JTextArea(1, STICKY_LENGTH);
 		
 		// creates an X close button for the sticky note
+		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
 		closeButton = new JButton("X");
 		closeButton.addActionListener(this);
+		closeButton.setFocusable(false);
+		closeButton.setMargin(new Insets(20, 30, 20, 20));
+		closeButton.setIcon(x);
+		c.add(closeButton, 0);
 		
 		// sets up the JTextArea so that words wrap
 		// around to a new line when exceeding the edge
@@ -56,10 +63,6 @@ public class StickyNotes extends JPanel implements ActionListener{
 		note.setMargin(new Insets(3, 3, 3, 3));
 		
 		scrollPart = new JScrollPane(note);
-		
-		// adds the scrollable pane and the close button to the screen
-		c.add(closeButton, 0);
-		
 		c.add(scrollPart, 0);
 		
 		// refreshes and updates the container
@@ -85,7 +88,7 @@ public class StickyNotes extends JPanel implements ActionListener{
 			// adds the JScrollPane with the text area
 			scrollPart.setBounds(stickyX, stickyY + 30 ,  STICKY_LENGTH,  STICKY_LENGTH-30);
 			// adds the close button
-			closeButton.setBounds(stickyX +  STICKY_LENGTH - 45, stickyY + 5,  42,  20);
+			closeButton.setBounds(stickyX +  STICKY_LENGTH - 32, stickyY + 1,  30,  30);
 		} else {
 			// hides the parts of the sticky note
 			scrollPart.setVisible(false);
