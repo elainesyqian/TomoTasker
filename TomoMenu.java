@@ -52,8 +52,13 @@ public class TomoMenu extends JPanel implements ActionListener {
 	Clip rainPlay, cafePlay, firePlay, birdPlay, wavePlay;
 
 	// all variables needed to change background image
-	public ImageIcon rainIcon, cafeIcon, fireIcon, birdIcon, waveIcon;
+	public ImageIcon rainIcon, cafeIcon, fireIcon, birdIcon, waveIcon, timerSymbol, listSymbol, stickySymbol;
 	public Image rainImage, cafeImage, fireImage, birdImage, waveImage;
+	
+	//variables for reading file
+    public static File file;
+    public static BufferedWriter bw;
+    public static BufferedReader br;
 
 	public ImageIcon[] backGroundSymbols = {
 			new ImageIcon(new ImageIcon("rainSymbol.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)),
@@ -64,17 +69,23 @@ public class TomoMenu extends JPanel implements ActionListener {
 
 	// constructor of TomoMenu
 	public TomoMenu(Container c, TomoFrame frame) {
+
 		this.c = c;
 		this.frame = frame;
 
 		// setup variables
 		currentBg = "Rain";
 		rainVis = 1;
+		
+		file = new File("notes.txt").getAbsoluteFile();
+        readSaved();
 
-		ImageIcon timerSymbol = new ImageIcon(
+		timerSymbol = new ImageIcon(
 				new ImageIcon("timerSymbol.png").getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
-		ImageIcon listSymbol = new ImageIcon(
+		listSymbol = new ImageIcon(
 				new ImageIcon("listSymbol.png").getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+		stickySymbol = new ImageIcon(
+				new ImageIcon("stickySymbol.png").getImage().getScaledInstance(84, 40, Image.SCALE_SMOOTH));
 
 		// creates, adds, positions the timer button on the screen and adds an action
 		// listener
@@ -83,6 +94,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		timerButton.setBounds(875, 75, 90, 90);
 		timerButton.addActionListener(this);
 		timerButton.setFocusable(false);
+		timerButton.setMargin(new Insets(20, 30, 20, 20));
 		timerButton.setIcon(timerSymbol);
 
 		// creates, adds, positions the checklist button on the screen and adds an
@@ -92,6 +104,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		checkListButton.setBounds(995, 75, 90, 90);
 		checkListButton.addActionListener(this);
 		checkListButton.setFocusable(false);
+		checkListButton.setMargin(new Insets(20, 30, 20, 20));
 		checkListButton.setIcon(listSymbol);
 
 		// creates, adds, positions the newNotes button on the screen and adds an action
@@ -100,6 +113,9 @@ public class TomoMenu extends JPanel implements ActionListener {
 		c.add(newNotesButton);
 		newNotesButton.setBounds(875, 195, 255, 50);
 		newNotesButton.addActionListener(this);
+		newNotesButton.setFocusable(false);
+		newNotesButton.setMargin(new Insets(20, 30, 20, 20));
+		newNotesButton.setIcon(stickySymbol);
 
 		// positions the background changing buttons so that they are all beside each
 		// other
@@ -115,6 +131,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			// adds an action listener to each background button
 			jB.addActionListener(this);
 			jB.setFocusable(false);
+			jB.setMargin(new Insets(20, 30, 20, 18));
 			jB.setIcon(backGroundSymbols[counter]);
 			counter++;
 		}
@@ -128,26 +145,31 @@ public class TomoMenu extends JPanel implements ActionListener {
 			rainStream = AudioSystem.getAudioInputStream(rainClip);
 			rainPlay = AudioSystem.getClip();
 			rainPlay.open(rainStream);
+			rainPlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			cafeClip = new File("Cafe.wav");
 			cafeStream = AudioSystem.getAudioInputStream(cafeClip);
 			cafePlay = AudioSystem.getClip();
 			cafePlay.open(cafeStream);
+			cafePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			fireClip = new File("Fire.wav");
 			fireStream = AudioSystem.getAudioInputStream(fireClip);
 			firePlay = AudioSystem.getClip();
 			firePlay.open(fireStream);
+			firePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			birdClip = new File("Birds.wav");
 			birdStream = AudioSystem.getAudioInputStream(birdClip);
 			birdPlay = AudioSystem.getClip();
 			birdPlay.open(birdStream);
+			birdPlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			waveClip = new File("Waves.wav");
 			waveStream = AudioSystem.getAudioInputStream(waveClip);
 			wavePlay = AudioSystem.getClip();
 			wavePlay.open(waveStream);
+			wavePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 		} catch (Exception e) {
 			// nothing will happen if crashes
@@ -211,14 +233,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			if (currentBg.equals("Rain")) {
 				g.drawString("Rainy Day", 875, 300);
 
-				// if on "play" mode
-				if (rainVis == 1) {
-					rainPlay.start(); // need implement looping sound
-
-				// otherwise, stop the audio
-				} else {
-					rainPlay.stop();
-				}
+				rainPlay.start();
 
 				// stops all other audio
 				cafePlay.stop();
@@ -229,14 +244,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			} else if (currentBg.equals("Cafe")) {
 				g.drawString("Cafe", 875, 300);
 
-				// if on "play" mode
-				if (cafeVis == 1) {
-					cafePlay.start(); // need implement looping sound
-
-				// otherwise, stop the audio
-				} else {
-					cafePlay.stop();
-				}
+				cafePlay.start();
 
 				// stops all other audio
 				rainPlay.stop();
@@ -247,14 +255,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			} else if (currentBg.equals("Fire")) {
 				g.drawString("Fireplace", 875, 300);
 
-				// if on "play" mode
-				if (fireVis == 1) {
-					firePlay.start(); // need implement looping sound
-
-				// otherwise, stop the audio
-				} else {
-					firePlay.stop();
-				}
+				firePlay.start();
 
 				// stops all other audio
 				rainPlay.stop();
@@ -265,14 +266,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			} else if (currentBg.equals("Bird")) {
 				g.drawString("Birds Chirping", 875, 300);
 
-				// if on "play" mode
-				if (birdVis == 1) {
-					birdPlay.start(); // need implement looping sound
-
-				// otherwise, stop the audio
-				} else {
-					birdPlay.stop();
-				}
+				birdPlay.start();
 
 				// stops all other audio
 				rainPlay.stop();
@@ -283,14 +277,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			} else if (currentBg.equals("Wave")) {
 				g.drawString("Waves at the Beach", 875, 300);
 
-				// if on "play" mode
-				if (waveVis == 1) {
-					wavePlay.start(); // need implement looping sound
-
-				// otherwise, stop the audio
-				} else {
-					wavePlay.stop();
-				}
+				wavePlay.start();
 
 				// stops all other audio
 				rainPlay.stop();
@@ -313,6 +300,8 @@ public class TomoMenu extends JPanel implements ActionListener {
 			}
 		}
 
+		writeToSave();
+		
 	}
 
 	public void actionPerformed(ActionEvent evt) {
@@ -415,5 +404,59 @@ public class TomoMenu extends JPanel implements ActionListener {
 		}
 		return quote;
 	}
+	
+	public void readSaved() {
+        String str;
+        String allText = "";
+        StickyNotes newNote;
+        int linesRead = 0;
+
+        try {
+            //setup buffered reader to read from the txt file
+            br = new BufferedReader(new FileReader(file));
+
+            //while the next line has content
+            while ((str = br.readLine()) != null) {
+                if (!str.equals("÷")) {
+                    if (!allText.equals("")) {
+                        allText = allText + "\n" + str;
+                    } else {
+                        allText = allText + str;
+                    }
+                } else {
+                    newNote = new StickyNotes(c, frame);
+                    newNote.note.setText(allText);
+                    str = br.readLine();
+                    newNote.stickyX = Integer.parseInt(str);
+                    str = br.readLine();
+                    newNote.stickyY = Integer.parseInt(str);
+                    notes.add(newNote);
+
+                    allText = "";
+                }
+                linesRead++;
+            }
+
+            //closes buffered reader
+            br.close();
+        } catch (Exception e) {
+            // nothing will happen if crashes
+            System.out.println("uh oh");
+        }
+    }
+
+    public void writeToSave() {
+        try {
+            bw = new BufferedWriter(new FileWriter(file));
+            for (int i = 0; i < notes.size(); i++) {
+                bw.write(notes.get(i).note.getText() + "\n÷\n");
+                bw.write(notes.get(i).stickyX + "\n" + notes.get(i).stickyY + "\n");
+            }
+            bw.close();
+            //closes the buffered reader
+        } catch (Exception e) {
+            // nothing will happen if crashes
+        }
+    }
 
 }
