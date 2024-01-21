@@ -39,6 +39,8 @@ public class Tasklist extends JPanel implements ActionListener {
 	public ArrayList<JCheckBox> checkBoxs = new ArrayList<JCheckBox>();
 	public ArrayList<JCheckBox> deleteButtons = new ArrayList<JCheckBox>();
 	
+	public ImageIcon trashIcon;
+	
 	//variables for reading file
 	public static File file;
 	public static BufferedWriter bw;
@@ -60,6 +62,8 @@ public class Tasklist extends JPanel implements ActionListener {
 		// constructor of the Tasklist
 		
 		file = new File("tasks.txt").getAbsoluteFile();
+		
+		trashIcon = new ImageIcon(new ImageIcon("trash.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH));
 
 		// gets the container and frame, in order to place things later
 		this.c = c;
@@ -321,6 +325,7 @@ public class Tasklist extends JPanel implements ActionListener {
 		
 		// adds an action listener that detects when this delete task checkbox is selected
 		newDeleteButton.addActionListener(this);
+		newDeleteButton.setIcon(trashIcon);
 		
 		deleteButtons.add(newDeleteButton);
 		
@@ -369,6 +374,7 @@ public class Tasklist extends JPanel implements ActionListener {
 			
 			panel.add(deleteButtons.get(i), gridLay);
 			deleteButtons.get(i).addActionListener(this);
+			deleteButtons.get(i).setIcon(trashIcon);
 		}
 		
 		// update the list borders
@@ -422,6 +428,7 @@ public class Tasklist extends JPanel implements ActionListener {
 				deleteButtons.add(new JCheckBox());
 				
 				deleteButtons.get(0).addActionListener(this);
+				deleteButtons.get(0).setIcon(trashIcon);
 				
 				// sets the position of the first checkbox
 				gridLay.weighty = 0;
