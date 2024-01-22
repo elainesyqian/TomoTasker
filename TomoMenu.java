@@ -109,6 +109,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		timerButton.addActionListener(this);
 		timerButton.setFocusable(false);
 		timerButton.setMargin(new Insets(20, 32, 20, 20));
+		// adds the timer icon to the button
 		timerButton.setIcon(timerSymbol);
 
 		// creates, and adds the checklist button on the screen and adds an
@@ -119,6 +120,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		checkListButton.addActionListener(this);
 		checkListButton.setFocusable(false);
 		checkListButton.setMargin(new Insets(20, 32, 20, 20));
+		// adds the checklist icon to the button
 		checkListButton.setIcon(listSymbol);
 
 		// creates, and adds the newNotes button on the screen and adds an action
@@ -129,6 +131,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		newNotesButton.addActionListener(this);
 		newNotesButton.setFocusable(false);
 		newNotesButton.setMargin(new Insets(20, 32, 20, 20));
+		// adds the sticky note icon to the button
 		newNotesButton.setIcon(stickySymbol);
 
 		// adds buttons for different rooms
@@ -138,6 +141,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 			jB.addActionListener(this);
 			jB.setFocusable(false);
 			jB.setMargin(new Insets(20, 30, 20, 18));
+			// adds the corresponding background icon to the button
 			jB.setIcon(backGroundSymbols[counter]);
 			counter++;
 		}
@@ -524,7 +528,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 	// writes the content of the sticky notes and it's coordinates to a file
 	public void writeToSave() {
 		try {
-			// creates a bufferedwriter to write content to the file
+			// creates a BufferedWriter to write content to the file
 			bw = new BufferedWriter(new FileWriter(file));
 			// for every sticky note in the array of notes
 			for (int i = 0; i < notes.size(); i++) {
