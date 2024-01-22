@@ -128,7 +128,7 @@ public class StreakCounter {
 	}
 
 	//this method draws the current streak to screen and recalculates the streak if necessary
-	public void draw(Graphics g) {
+	public void draw(Graphics g, int menuX, int menuY) {
 		
 		//if todaysDate is no longer today's date (aka becomes yesterdays date)
 		if (!(todaysDate + "").equals(getToday() + "")) {
@@ -147,7 +147,7 @@ public class StreakCounter {
 		
 		//draws the current streak to screen
 		g.setColor(Color.BLACK);
-		g.drawString("CURRENT STREAK: " + curStreak, 875, 400);
+		g.drawString("CURRENT STREAK: " + curStreak, menuX + 25, menuY + 262);
 	}
 
 }
