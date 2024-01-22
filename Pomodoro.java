@@ -1,5 +1,5 @@
 /* Elaine Qian and Shiloh ZHeng
- * January 17th, 2024
+ * January 21st, 2024
  * Pomodoro
  * This class handles all aspects of the Pomodoro timer feature
 */
@@ -72,31 +72,42 @@ public class Pomodoro extends JPanel implements ActionListener {
 		// buttons setup
 		// initializing
 		
-		
+		// getting the icons for the pause/play button
 		start = new ImageIcon(new ImageIcon("play.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
 		pause = new ImageIcon(new ImageIcon("pause.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
 		
+		// creating the pause/play button
 		controlTimer = new JButton("START");
+		// adding the button to the screen
 		c.add(controlTimer);
 		controlTimer.addActionListener(this);
 		controlTimer.setFocusable(false);
 		controlTimer.setMargin(new Insets(20, 30, 20, 20));
+		// adding the start icon onto it to begin with
 		controlTimer.setIcon(start);
 		
+		// gets the icon for the restart timer button
 		reset = new ImageIcon(new ImageIcon("reset.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
+		// creating the restart timer button
 		resetTimer = new JButton("RESET");
+		// adding the button to the screen
 		c.add(resetTimer);
 		resetTimer.addActionListener(this);
 		resetTimer.setFocusable(false);
 		resetTimer.setMargin(new Insets(20, 30, 20, 20));
+		// adding the reset icon to it
 		resetTimer.setIcon(reset);
 		
+		// getting the x icon
 		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		// creating the close window button
 		closeButton = new JButton("X");
+		// adding the button to the screen
 		c.add(closeButton);
 		closeButton.addActionListener(this);
 		closeButton.setFocusable(false);
 		closeButton.setMargin(new Insets(20, 33, 21, 20));
+		// adding the x icon to it
 		closeButton.setIcon(x);
 		
 		
@@ -105,7 +116,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 		changeTimer = new JComboBox(timerOptions);
 		// sets the font for this dropdown menu
 		changeTimer.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		// adds the dropdown to the screen
 		c.add(changeTimer);
+		// adds an ActionListener to see when it's being interacted with
 		changeTimer.addActionListener(this);
 
 		// add the alert dropdown so that the user can choose which alert they would
@@ -113,7 +126,9 @@ public class Pomodoro extends JPanel implements ActionListener {
 		changeAlert = new JComboBox(alertOptions);
 		// sets the font for this dropdown menu
 		changeAlert.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		// adds the dropdown to the screen
 		c.add(changeAlert);
+		// adds an ActionListener to see when it's being interacted with
 		changeAlert.addActionListener(this);
 	}
 
@@ -324,7 +339,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	// called from TomoPanel when the mouse is pressed
 	// saves the x and y values of the mouse press and timer
 	public void mousePressed(MouseEvent e) {
-		// gets the x and y of the mouse and list when the mouse is pressed
+		// gets the x and y of the mouse and timer when the mouse is pressed
 		firstMouseX = e.getX();
 		firstMouseY = e.getY();
 		firstPomoX = pomoX;
@@ -341,10 +356,10 @@ public class Pomodoro extends JPanel implements ActionListener {
 		// was first pressed down
 		if (firstMouseX >= firstPomoX && firstMouseX <= firstPomoX + POMO_WIDTH && firstMouseY >= firstPomoY
 				&& firstMouseY <= firstPomoY + 30) {
-			// if the mouse was in the title tab, allow for the list to be dragged
+			// if the mouse was in the title tab, allow for the timer to be dragged
 			mouseDragging = true;
 		} else {
-			// otherwise, don't drag the list
+			// otherwise, don't drag the timer
 			mouseDragging = false;
 		}
 
