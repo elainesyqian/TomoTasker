@@ -24,9 +24,6 @@ public class Tasklist extends JPanel implements ActionListener {
 	public int listX = 100;
 	public int listY = 300;
 
-	// boolean that saves whether or not the mouse is currently dragging the list
-	public boolean mouseDragging = false;
-
 	public Container c;
 	public TomoFrame frame;
 
@@ -217,13 +214,6 @@ public class Tasklist extends JPanel implements ActionListener {
 		if (firstMouseX >= firstListX && firstMouseX <= firstListX + LIST_WIDTH && firstMouseY >= firstListY
 				&& firstMouseY <= firstListY + 30) {
 			// if the mouse was in the title tab, allow for the list to be dragged
-			mouseDragging = true;
-		} else {
-			// otherwise, don't drag the list
-			mouseDragging = false;
-		}
-
-		if (mouseDragging) {
 			// if the list is currently being dragged, make it follow the mouse
 			listX = e.getX() - (firstMouseX - firstListX);
 			listY = e.getY() - (firstMouseY - firstListY);
@@ -532,7 +522,7 @@ public class Tasklist extends JPanel implements ActionListener {
 				}
 			}
 			bw.close();
-			// closes the buffered reader
+			// closes the buffered writer
 		} catch (Exception e) {
 			// nothing will happen if crashes
 		}
