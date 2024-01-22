@@ -38,14 +38,14 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public boolean play, playAlert, changedAlert = false;
 
 	// dropdown for timer options
-	String[] timerOptions = { "Work", "Short Break", "Long Break" };
-	JComboBox changeTimer;
-	String currentTimer;
+	public String[] timerOptions = { "Work", "Short Break", "Long Break" };
+	public JComboBox changeTimer;
+	public String currentTimer;
 
 	// dropdown for alert options
-	String[] alertOptions = { "Apex", "Bells", "Electronic", "Flute", "Marimba" };
-	JComboBox changeAlert;
-	String currentAlert;
+	public String[] alertOptions = { "Apex", "Bells", "Electronic", "Flute", "Marimba" };
+	public JComboBox changeAlert;
+	public String currentAlert;
 
 	// variables for dragging
 	public int firstMouseX;
