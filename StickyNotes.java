@@ -23,9 +23,7 @@ public class StickyNotes extends JPanel implements ActionListener {
 	int notesVis = 1;
 	boolean delete = false;
 
-	// boolean that saves whether or not the mouse is currently dragging the note
-	public boolean mouseDragging = false;
-
+	// variables for mouse dragging
 	public int firstMouseX;
 	public int firstMouseY;
 	public int firstNoteX;
@@ -127,14 +125,7 @@ public class StickyNotes extends JPanel implements ActionListener {
 		if (firstMouseX >= firstNoteX && firstMouseX <= firstNoteX + STICKY_LENGTH && firstMouseY >= firstNoteY
 				&& firstMouseY <= firstNoteY + 30) {
 			// if the mouse was in the title tab, allow for the note to be dragged
-			mouseDragging = true;
-		} else {
-			// otherwise, don't drag the note
-			mouseDragging = false;
-		}
-
-		if (mouseDragging) {
-			// if the note is currently being dragged, make it follow the mouse
+			// since the note is currently being dragged, make it follow the mouse
 			stickyX = e.getX() - (firstMouseX - firstNoteX);
 			stickyY = e.getY() - (firstMouseY - firstNoteY);
 
