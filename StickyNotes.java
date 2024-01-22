@@ -1,5 +1,5 @@
 /* Elaine Qian and Shiloh Zheng
- * January 17th, 2024
+ * January 21st, 2024
  * StickyNotes
  * This class creates a sticky note, which can be typed on, dragged around, and deleted
 */
@@ -7,9 +7,6 @@
 //import statements
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 
 import javax.swing.*;
 
@@ -46,11 +43,16 @@ public class StickyNotes extends JPanel implements ActionListener{
 		note = new JTextArea(1, STICKY_LENGTH);
 		
 		// creates an X close button for the sticky note
+		
+		// gets the x icon for the button
 		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+		// creates a close button
 		closeButton = new JButton("X");
-		closeButton.addActionListener(this);
 		closeButton.setFocusable(false);
 		closeButton.setMargin(new Insets(20, 33, 21, 20));
+		// adds an ActionListener to see when it's clicked
+		closeButton.addActionListener(this);
+		// sets the icon of the button
 		closeButton.setIcon(x);
 		c.add(closeButton, 0);
 		
@@ -59,11 +61,13 @@ public class StickyNotes extends JPanel implements ActionListener{
 		note.setLineWrap(true); 
 		note.setWrapStyleWord(true);
 		
+		// sets the font for the text area
 		note.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		// creates insets for the JTextArea so the text doesn't touch the edges
 		note.setMargin(new Insets(3, 3, 3, 3));
 		
+		// makes the note scrollable and adds it to the screen
 		scrollPart = new JScrollPane(note);
 		c.add(scrollPart, 0);
 		
@@ -106,7 +110,7 @@ public class StickyNotes extends JPanel implements ActionListener{
 		// called from TomoMenu when the mouse is pressed
 		// saves the x and y values of the mouse press and note
 		public void mousePressed(MouseEvent e) {
-			// gets the x and y of the mouse and list when the mouse is pressed
+			// gets the x and y of the mouse and note when the mouse is pressed
 			firstMouseX = e.getX();
 			firstMouseY = e.getY();
 			firstNoteX = stickyX;
