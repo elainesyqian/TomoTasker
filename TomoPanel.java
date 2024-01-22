@@ -19,8 +19,6 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 	public Image image;
 	public Graphics graphics;
 
-	public JButton b;
-
 	public TomoMenu menu;
 	public Tasklist list;
 	public Pomodoro timer;
