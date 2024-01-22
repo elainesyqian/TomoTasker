@@ -176,6 +176,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 				// repaint to the screen so displays 0:00
 				sec = 0;
 				g.drawString("0:00", 190, 170);
+				controlTimer.setIcon(start);
 				repaint();
 
 				// play alert
@@ -231,6 +232,17 @@ public class Pomodoro extends JPanel implements ActionListener {
 				play = false;
 				controlTimer.setIcon(start);
 			} else {
+				
+				if (min == 0 && sec == 0) {
+					if (currentTimer.equals("Work")) {
+						min = 40;
+					} else if (currentTimer.equals("Short Break")) {
+						min = 5;
+					} else if (currentTimer.equals("Long Break")) {
+						min = 15;
+					}
+				}
+				
 				play = true;
 				playAlert = false;
 				controlTimer.setIcon(pause);
