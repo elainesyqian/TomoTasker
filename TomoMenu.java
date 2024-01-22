@@ -30,12 +30,12 @@ public class TomoMenu extends JPanel implements ActionListener {
 	public int firstMenuY;
 
 	// buttons on the menu
-	JButton timerButton;
-	JButton checkListButton;
-	JButton newNotesButton;
+	public JButton timerButton;
+	public JButton checkListButton;
+	public JButton newNotesButton;
 
 	// array of buttons for rooms
-	JButton[] backGroundButtons = { new JButton("rain"), new JButton("cafe"), new JButton("fire"), new JButton("bird"),
+	public JButton[] backGroundButtons = { new JButton("rain"), new JButton("cafe"), new JButton("fire"), new JButton("bird"),
 			new JButton("wave") };
 
 	// how much to shift each room button by
@@ -54,9 +54,9 @@ public class TomoMenu extends JPanel implements ActionListener {
 	public int counter = 0;
 
 	// all variables needed to play ambient sound
-	File rainClip, cafeClip, fireClip, birdClip, waveClip;
-	AudioInputStream rainStream, cafeStream, fireStream, birdStream, waveStream;
-	Clip rainPlay, cafePlay, firePlay, birdPlay, wavePlay;
+	public File rainClip, cafeClip, fireClip, birdClip, waveClip;
+	public AudioInputStream rainStream, cafeStream, fireStream, birdStream, waveStream;
+	public Clip rainPlay, cafePlay, firePlay, birdPlay, wavePlay;
 
 	// all variables needed to change background image
 	public ImageIcon rainIcon, cafeIcon, fireIcon, birdIcon, waveIcon, timerSymbol, listSymbol, stickySymbol;
