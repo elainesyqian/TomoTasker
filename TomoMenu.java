@@ -272,7 +272,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Cafe")) {
-				g.drawString("Cafe", menuX + 125, menuY + 160);
+				g.drawString("Cafe", menuX + 147, menuY + 167);
 
 				cafePlay.start();
 				cafePlay.loop(Clip.LOOP_CONTINUOUSLY);
@@ -284,7 +284,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Fire")) {
-				g.drawString("Fireplace", menuX + 125, menuY + 160);
+				g.drawString("Fireplace", menuX + 147, menuY + 167);
 
 				firePlay.start();
 				firePlay.loop(Clip.LOOP_CONTINUOUSLY);
@@ -296,7 +296,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Bird")) {
-				g.drawString("Birds Chirping", menuX + 125, menuY + 160);
+				g.drawString("Birds Chirping", menuX + 147, menuY + 167);
 
 				birdPlay.start();
 				birdPlay.loop(Clip.LOOP_CONTINUOUSLY);
@@ -308,7 +308,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Wave")) {
-				g.drawString("Waves at the Beach", menuX + 125, menuY + 160);
+				g.drawString("Waves at the Beach", menuX + 147, menuY + 167);
 
 				wavePlay.start();
 				wavePlay.loop(Clip.LOOP_CONTINUOUSLY);
