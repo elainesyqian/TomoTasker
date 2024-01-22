@@ -10,18 +10,18 @@ import javax.swing.*;
 
 public class TomoFrame extends JFrame {
 
-	//variable declarations
+	// variable declarations
 	TomoPanel panel;
 	Container c;
-	
-	//TomoFrame constructor called by Main
+
+	// TomoFrame constructor called by Main
 	public TomoFrame() {
 		c = getContentPane();
 		c.setLayout(new BorderLayout());
-		
+
 		panel = new TomoPanel(c, this); // run TomoPanel constructor
-		this.add(panel); //add the panel to frame
-		
+		this.add(panel); // add the panel to frame
+
 		this.setTitle("TOMOTASKER"); // set title for frame
 		this.setResizable(false); // frame can't change size
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // X button will stop program execution
@@ -30,5 +30,5 @@ public class TomoFrame extends JFrame {
 		this.setLocationRelativeTo(null);// set window in middle of screen
 
 	}
-	
+
 }
