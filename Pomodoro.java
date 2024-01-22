@@ -48,6 +48,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public String currentAlert;
 
 	// variables for dragging
+	public boolean mouseDragging;
 	public int firstMouseX;
 	public int firstMouseY;
 	public int firstPomoX;
@@ -231,6 +232,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			changeTimer.setVisible(false);
 			changeAlert.setVisible(false);
 			play = false;
+			controlTimer.setIcon(start);
 		}
 
 	}
@@ -350,10 +352,18 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public void mouseDragged(MouseEvent e) {
 
 		// checks if the x and y values of the mouse fall within the draggable title tab
-		// when the mouse was first pressed down
+		// when the mouse
+		// was first pressed down
 		if (firstMouseX >= firstPomoX && firstMouseX <= firstPomoX + POMO_WIDTH && firstMouseY >= firstPomoY
 				&& firstMouseY <= firstPomoY + 30) {
 			// if the mouse was in the title tab, allow for the timer to be dragged
+			mouseDragging = true;
+		} else {
+			// otherwise, don't drag the timer
+			mouseDragging = false;
+		}
+
+		if (mouseDragging) {
 			// if the timer is currently being dragged, make it follow the mouse
 			pomoX = e.getX() - (firstMouseX - firstPomoX);
 			pomoY = e.getY() - (firstMouseY - firstPomoY);
