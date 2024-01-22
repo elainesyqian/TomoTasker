@@ -1,4 +1,5 @@
 /* Elaine Qian and Shiloh Zheng
+ * January 21st, 2024
  * TomoFrame
  * This class establishes the frame for the program
  */
@@ -9,9 +10,11 @@ import javax.swing.*;
 
 public class TomoFrame extends JFrame {
 
+	//variable declarations
 	TomoPanel panel;
 	Container c;
 	
+	//TomoFrame constructor called by Main
 	public TomoFrame() {
 		c = getContentPane();
 		c.setLayout(new BorderLayout());
