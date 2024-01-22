@@ -1,4 +1,4 @@
-/* Elaine Qian and Shiloh ZHeng
+/* Elaine Qian and Shiloh Zheng
  * January 21st, 2024
  * Pomodoro
  * This class handles all aspects of the Pomodoro timer feature
