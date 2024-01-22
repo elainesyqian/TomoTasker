@@ -539,7 +539,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				bw.write(notes.get(i).stickyX + "\n" + notes.get(i).stickyY + "\n");
 			}
 			bw.close();
-			// closes the buffered reader
+			// closes the buffered writer
 		} catch (Exception e) {
 			// nothing will happen if crashes
 		}
