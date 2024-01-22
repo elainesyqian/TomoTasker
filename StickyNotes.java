@@ -20,8 +20,8 @@ public class StickyNotes extends JPanel implements ActionListener {
 	public int stickyY = 100;
 
 	public JTextArea note;
-	int notesVis = 1;
-	boolean delete = false;
+	public int notesVis = 1;
+	public boolean delete = false;
 
 	// variables for mouse dragging
 	public int firstMouseX;
