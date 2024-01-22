@@ -8,40 +8,40 @@
 import java.awt.*;
 
 public class DateTimeDisplay {
-	
-	//variable declarations
+
+	// variable declarations
 	public String currentDate;
 	public String formattedDate;
 	public String formattedTime;
-	
-	//constructor
+
+	// constructor
 	public DateTimeDisplay() {
-		
-		//variable initializations
-		
-		//set new date using java system's current time
+
+		// variable initializations
+
+		// set new date using java system's current time
 		currentDate = new java.util.Date(System.currentTimeMillis()) + "";
-		
-		//get the formatted date and time
-		formattedDate = currentDate.substring(0,10) +","+ currentDate.substring(23,28);
-		formattedTime = currentDate.substring(11, 16)+currentDate.substring(19, 23);
+
+		// get the formatted date and time
+		formattedDate = currentDate.substring(0, 10) + "," + currentDate.substring(23, 28);
+		formattedTime = currentDate.substring(11, 16) + currentDate.substring(19, 23);
 	}
-	
-	//this method takes care of drawing the date and time to screen
+
+	// this method takes care of drawing the date and time to screen
 	public void draw(Graphics g) {
-		
-		//set font
+
+		// set font
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		
-		//draws the necessary information to screen
+
+		// draws the necessary information to screen
 		g.drawString(formattedDate, 10, 30);
 		g.drawString(formattedTime, 1050, 30);
 
-		//updates the necessary information
+		// updates the necessary information
 		currentDate = new java.util.Date(System.currentTimeMillis()) + "";
-		formattedDate = currentDate.substring(0,10) +","+ currentDate.substring(23,28);
-		formattedTime = currentDate.substring(11, 16)+currentDate.substring(19, 23);
+		formattedDate = currentDate.substring(0, 10) + "," + currentDate.substring(23, 28);
+		formattedTime = currentDate.substring(11, 16) + currentDate.substring(19, 23);
 	}
-	
+
 }
