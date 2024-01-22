@@ -53,12 +53,12 @@ public class Pomodoro extends JPanel implements ActionListener {
 	public int firstMouseY;
 	public int firstPomoX;
 	public int firstPomoY;
-	
+
 	public ImageIcon x, start, pause, reset;
 
 	// constructor
 	public Pomodoro(Container c) {
-			    
+
 		// setup
 		this.c = c;
 
@@ -71,11 +71,11 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 		// buttons setup
 		// initializing
-		
+
 		// getting the icons for the pause/play button
 		start = new ImageIcon(new ImageIcon("play.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
 		pause = new ImageIcon(new ImageIcon("pause.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
-		
+
 		// creating the pause/play button
 		controlTimer = new JButton("START");
 		// adding the button to the screen
@@ -85,7 +85,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 		controlTimer.setMargin(new Insets(20, 30, 20, 20));
 		// adding the start icon onto it to begin with
 		controlTimer.setIcon(start);
-		
+
 		// gets the icon for the restart timer button
 		reset = new ImageIcon(new ImageIcon("reset.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH));
 		// creating the restart timer button
@@ -97,7 +97,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 		resetTimer.setMargin(new Insets(20, 30, 20, 20));
 		// adding the reset icon to it
 		resetTimer.setIcon(reset);
-		
+
 		// getting the x icon
 		x = new ImageIcon(new ImageIcon("x.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		// creating the close window button
@@ -109,8 +109,6 @@ public class Pomodoro extends JPanel implements ActionListener {
 		closeButton.setMargin(new Insets(20, 33, 21, 20));
 		// adding the x icon to it
 		closeButton.setIcon(x);
-		
-		
 
 		// add the timer type dropdown so that the user can choose which timer they use
 		changeTimer = new JComboBox(timerOptions);
@@ -150,7 +148,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 			g.setColor(Color.black);
 
 			// sets the font for the timer
-			
+
 			g.setFont(new Font("Tahoma", Font.PLAIN, 17));
 			g.drawString("TIMER", pomoX + 20, pomoY + 20);
 
@@ -164,7 +162,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 			resetTimer.setVisible(true);
 			resetTimer.setBounds(pomoX + 5, pomoY + 85, 45, 45);
-			
+
 			closeButton.setVisible(true);
 			closeButton.setBounds(pomoX + POMO_WIDTH - 27, pomoY + 5, 21, 21);
 
@@ -247,7 +245,7 @@ public class Pomodoro extends JPanel implements ActionListener {
 				play = false;
 				controlTimer.setIcon(start);
 			} else {
-				
+
 				if (min == 0 && sec == 0) {
 					if (currentTimer.equals("Work")) {
 						min = 40;
@@ -257,14 +255,14 @@ public class Pomodoro extends JPanel implements ActionListener {
 						min = 15;
 					}
 				}
-				
+
 				play = true;
 				playAlert = false;
 				controlTimer.setIcon(pause);
 			}
 
-		// if reset button is clicked set play to false, sec to 0, and min to
-		// respective values based on which timer was last used
+			// if reset button is clicked set play to false, sec to 0, and min to
+			// respective values based on which timer was last used
 		} else if (evt.getSource() == resetTimer) {
 			currentTimer = changeTimer.getSelectedItem() + "";
 
@@ -281,14 +279,14 @@ public class Pomodoro extends JPanel implements ActionListener {
 
 		} else if (evt.getSource() == closeButton) {
 			timerVis = -1;
-			
-		//if timer dropdown is clicked	
+
+			// if timer dropdown is clicked
 		} else if (evt.getSource() == changeTimer) {
 
-			//change the current timer to what is selected
+			// change the current timer to what is selected
 			currentTimer = changeTimer.getSelectedItem() + "";
 
-			//set min to respective values based on timer type
+			// set min to respective values based on timer type
 			if (currentTimer.equals("Work")) {
 				min = 40;
 			} else if (currentTimer.equals("Short Break")) {
@@ -296,19 +294,20 @@ public class Pomodoro extends JPanel implements ActionListener {
 			} else if (currentTimer.equals("Long Break")) {
 				min = 15;
 			}
-			
-			//set sec to 0 and play to false
+
+			// set sec to 0 and play to false
 			sec = 0;
 			play = false;
 			controlTimer.setIcon(start);
 
-		//if alert dropdown is clicked
+			// if alert dropdown is clicked
 		} else if (evt.getSource() == changeAlert) {
-			
-			//change the current alert to what is selected
+
+			// change the current alert to what is selected
 			currentAlert = changeAlert.getSelectedItem() + ".wav";
-			
-			//play the alert that has been chosen so that the user knows what it sounds like
+
+			// play the alert that has been chosen so that the user knows what it sounds
+			// like
 			playSound(currentAlert);
 		}
 
