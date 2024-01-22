@@ -147,31 +147,26 @@ public class TomoMenu extends JPanel implements ActionListener {
 			rainStream = AudioSystem.getAudioInputStream(rainClip);
 			rainPlay = AudioSystem.getClip();
 			rainPlay.open(rainStream);
-			rainPlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			cafeClip = new File("Cafe.wav");
 			cafeStream = AudioSystem.getAudioInputStream(cafeClip);
 			cafePlay = AudioSystem.getClip();
 			cafePlay.open(cafeStream);
-			cafePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			fireClip = new File("Fire.wav");
 			fireStream = AudioSystem.getAudioInputStream(fireClip);
 			firePlay = AudioSystem.getClip();
 			firePlay.open(fireStream);
-			firePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			birdClip = new File("Birds.wav");
 			birdStream = AudioSystem.getAudioInputStream(birdClip);
 			birdPlay = AudioSystem.getClip();
 			birdPlay.open(birdStream);
-			birdPlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 			waveClip = new File("Waves.wav");
 			waveStream = AudioSystem.getAudioInputStream(waveClip);
 			wavePlay = AudioSystem.getClip();
 			wavePlay.open(waveStream);
-			wavePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 		} catch (Exception e) {
 			// nothing will happen if crashes
@@ -268,6 +263,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				g.drawString("Rainy Day", menuX + 147, menuY + 167);
 
 				rainPlay.start();
+				rainPlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 				// stops all other audio
 				cafePlay.stop();
@@ -279,6 +275,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				g.drawString("Cafe", menuX + 125, menuY + 160);
 
 				cafePlay.start();
+				cafePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 				// stops all other audio
 				rainPlay.stop();
@@ -290,6 +287,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				g.drawString("Fireplace", menuX + 125, menuY + 160);
 
 				firePlay.start();
+				firePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 				// stops all other audio
 				rainPlay.stop();
@@ -301,6 +299,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				g.drawString("Birds Chirping", menuX + 125, menuY + 160);
 
 				birdPlay.start();
+				birdPlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 				// stops all other audio
 				rainPlay.stop();
@@ -312,6 +311,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				g.drawString("Waves at the Beach", menuX + 125, menuY + 160);
 
 				wavePlay.start();
+				wavePlay.loop(Clip.LOOP_CONTINUOUSLY);
 
 				// stops all other audio
 				rainPlay.stop();
