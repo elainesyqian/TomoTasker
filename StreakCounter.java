@@ -1,5 +1,5 @@
 /* Elaine Qian and Shiloh Zheng
- * January 17th, 2024
+ * January 21st, 2024
  * StreakCounter
  * This class reads and writes dates from an external file to keep track of the user's streak
 */
