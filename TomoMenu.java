@@ -17,7 +17,16 @@ import javax.swing.*;
 public class TomoMenu extends JPanel implements ActionListener {
 	// size of the rectangle
 	public static final int MENU_WIDTH = 300;
-	public static final int MENU_HEIGHT = 550;
+	public static final int MENU_HEIGHT = 256;
+	
+	// saves the coordinates of the menu
+	public int menuX = 850;
+	public int menuY = 50;
+	
+	public int firstMouseX;
+	public int firstMouseY;
+	public int firstMenuX;
+	public int firstMenuY;
 
 	// buttons on the menu
 	JButton timerButton;
@@ -83,55 +92,44 @@ public class TomoMenu extends JPanel implements ActionListener {
         readSaved();
 
 		timerSymbol = new ImageIcon(
-				new ImageIcon("timerSymbol.png").getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+				new ImageIcon("timerSymbol.png").getImage().getScaledInstance(73, 73, Image.SCALE_SMOOTH));
 		listSymbol = new ImageIcon(
-				new ImageIcon("listSymbol.png").getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+				new ImageIcon("listSymbol.png").getImage().getScaledInstance(73, 73, Image.SCALE_SMOOTH));
 		stickySymbol = new ImageIcon(
-				new ImageIcon("stickySymbol.png").getImage().getScaledInstance(84, 40, Image.SCALE_SMOOTH));
-
-		// creates, adds, positions the timer button on the screen and adds an action
+				new ImageIcon("stickySymbol.png").getImage().getScaledInstance(73, 73, Image.SCALE_SMOOTH));
+		
+		// creates, and adds the timer button on the screen and adds an action
 		// listener
 		timerButton = new JButton("TIMER");
 		c.add(timerButton);
-		timerButton.setBounds(875, 75, 90, 90);
 		timerButton.addActionListener(this);
 		timerButton.setFocusable(false);
-		timerButton.setMargin(new Insets(20, 30, 20, 20));
+		timerButton.setMargin(new Insets(20, 32, 20, 20));
 		timerButton.setIcon(timerSymbol);
 
-		// creates, adds, positions the checklist button on the screen and adds an
+		// creates, and adds the checklist button on the screen and adds an
 		// action listener
 		checkListButton = new JButton("CHECKLIST");
 		checkListButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		c.add(checkListButton);
-		checkListButton.setBounds(995, 75, 90, 90);
 		checkListButton.addActionListener(this);
 		checkListButton.setFocusable(false);
-		checkListButton.setMargin(new Insets(20, 30, 20, 20));
+		checkListButton.setMargin(new Insets(20, 32, 20, 20));
 		checkListButton.setIcon(listSymbol);
 
-		// creates, adds, positions the newNotes button on the screen and adds an action
+		// creates, and adds the newNotes button on the screen and adds an action
 		// listener
 		newNotesButton = new JButton("ADD A NEW NOTE");
 		newNotesButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		c.add(newNotesButton);
-		newNotesButton.setBounds(875, 195, 255, 50);
 		newNotesButton.addActionListener(this);
 		newNotesButton.setFocusable(false);
-		newNotesButton.setMargin(new Insets(20, 30, 20, 20));
+		newNotesButton.setMargin(new Insets(20, 32, 20, 20));
 		newNotesButton.setIcon(stickySymbol);
-
-		// positions the background changing buttons so that they are all beside each
-		// other
-		buttonRightShift = 0;
-
+				
 		// adds buttons for different rooms
 		for (JButton jB : backGroundButtons) {
 			c.add(jB);
-			jB.setBounds(870 + buttonRightShift, 320, 45, 45);
-			// increases the x-position of the next background button to place
-			buttonRightShift = buttonRightShift + 55;
-
 			// adds an action listener to each background button
 			jB.addActionListener(this);
 			jB.setFocusable(false);
@@ -200,7 +198,21 @@ public class TomoMenu extends JPanel implements ActionListener {
 	// draws parts of the menu, the background, and controls ambient sound
 	public void draw(Graphics g) {
 		
-		g.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		// positions timer, checklist, and new note button on the main menu
+		timerButton.setBounds(menuX + 25, menuY + 55, 73, 73);
+		checkListButton.setBounds(menuX + 115, menuY + 55, 73, 73);
+		newNotesButton.setBounds(menuX + 207, menuY + 55, 73, 73);
+		
+		// positions the background changing buttons so that they are all beside each
+		// other
+		buttonRightShift = 0;
+				
+		for (JButton jB : backGroundButtons) {
+			//positions the each backGroundButton onto the main menu
+			jB.setBounds(menuX + 20 + buttonRightShift, menuY + 178, 45, 45);
+			// increases the x-position of the next background button to place
+			buttonRightShift = buttonRightShift + 55;
+		}
 
 		// draws the respective backgrounds based off of which room the user is in
 		// must draw the background images first so that the other stuff appears on top
@@ -220,16 +232,32 @@ public class TomoMenu extends JPanel implements ActionListener {
 			g.drawImage(waveImage, 0, 0, TomoPanel.PANEL_WIDTH, TomoPanel.PANEL_HEIGHT, null);
 		}
 
-		// draws the rectangle
+		// draws the draggable tab rectangle
 		g.setColor(Color.PINK);
-		g.fillRect(850, 50, MENU_WIDTH, MENU_HEIGHT);
+		g.fillRect(menuX, menuY, MENU_WIDTH, 30);
+		
+		// sets the font for the title
+		g.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		
+		// adds the title
+		g.setColor(Color.BLACK);
+		g.drawString("MENU", menuX + 10, menuY + 21);
+		
+		// draws the main rectangle
+		g.setColor(Color.WHITE);
+		g.fillRect(menuX, menuY + 30, MENU_WIDTH, MENU_HEIGHT);
+		
+		// sets the font for the rest of the text
+		g.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
+		// adds the daily quote
 		g.setColor(Color.WHITE);
 		g.drawString("DAILY QUOTE:", 5, 635);
-		g.drawString(todaysQuote, 100, 635);
+		g.drawString(todaysQuote, 111, 635);
 
+		// adds the text that says the current room
 		g.setColor(Color.BLACK);
-		g.drawString("CURRENT ROOM:", 875, 275);
+		g.drawString("CURRENT ROOM:", menuX + 25, menuY + 167);
 
 		// draws the respective room text to screen
 		// plays corresponding audio while stopping all other audio
@@ -237,7 +265,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 		try {
 
 			if (currentBg.equals("Rain")) {
-				g.drawString("Rainy Day", 875, 300);
+				g.drawString("Rainy Day", menuX + 147, menuY + 167);
 
 				rainPlay.start();
 
@@ -248,7 +276,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Cafe")) {
-				g.drawString("Cafe", 875, 300);
+				g.drawString("Cafe", menuX + 125, menuY + 160);
 
 				cafePlay.start();
 
@@ -259,7 +287,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Fire")) {
-				g.drawString("Fireplace", 875, 300);
+				g.drawString("Fireplace", menuX + 125, menuY + 160);
 
 				firePlay.start();
 
@@ -270,7 +298,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Bird")) {
-				g.drawString("Birds Chirping", 875, 300);
+				g.drawString("Birds Chirping", menuX + 125, menuY + 160);
 
 				birdPlay.start();
 
@@ -281,7 +309,7 @@ public class TomoMenu extends JPanel implements ActionListener {
 				wavePlay.stop();
 
 			} else if (currentBg.equals("Wave")) {
-				g.drawString("Waves at the Beach", 875, 300);
+				g.drawString("Waves at the Beach", menuX + 125, menuY + 160);
 
 				wavePlay.start();
 
@@ -297,7 +325,6 @@ public class TomoMenu extends JPanel implements ActionListener {
 			// nothing will happen if crashes
 		}
 
-		// TODO add each note to screen
 		for (int i = 0; i < notes.size(); i++) {
 			if (!notes.get(i).delete) {
 				notes.get(i).draw(g);
@@ -311,7 +338,6 @@ public class TomoMenu extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		// TODO set up all buttons reactions to being clicked
 
 		if (evt.getSource() == timerButton) {
 			Pomodoro.timerVis = Pomodoro.timerVis * -1;
@@ -369,17 +395,45 @@ public class TomoMenu extends JPanel implements ActionListener {
 	// called from TomoPanel when the mouse is pressed
 	// and calls mousePressed for all the sticky notes
 	public void mousePressed(MouseEvent e) {
-		// gets the x and y of the mouse and list when the mouse is pressed
+		// gets the x and y of the mouse and menu when the mouse is pressed
 		for (int i = 0; i < notes.size(); i++) {
 			notes.get(i).mousePressed(e);
 		}
+		
+		firstMouseX = e.getX();
+		firstMouseY = e.getY();
+		firstMenuX = menuX;
+		firstMenuY = menuY;
 	}
 
 	// called from TomoPanel when the mouse is dragged
 	// and calls mouseDragged for all the sticky notes
+	// and drags the menu if applicable
 	public void mouseDragged(MouseEvent e) {
 		for (int i = 0; i < notes.size(); i++) {
 			notes.get(i).mouseDragged(e);
+		}
+		
+		if (firstMouseX >= firstMenuX && firstMouseX <= firstMenuX + MENU_WIDTH && firstMouseY >= firstMenuY
+				&& firstMouseY <= firstMenuY + 30) {
+			// if the mouse was in the title tab, allow for the menu to be dragged
+			menuX = e.getX() - (firstMouseX - firstMenuX);
+			menuY = e.getY() - (firstMouseY - firstMenuY);
+
+			// if the mouse drags the title tab offscreen, move it back onscreen
+			if (menuX < 0) {
+				menuX = 0;
+			} else if (menuX > TomoPanel.PANEL_WIDTH - MENU_WIDTH) {
+				menuX = TomoPanel.PANEL_WIDTH - MENU_WIDTH;
+			}
+
+			if (menuY < 0) {
+				menuY = 0;
+			} else if (menuY + 30 > TomoPanel.PANEL_HEIGHT) {
+				menuY = TomoPanel.PANEL_HEIGHT - 30;
+			}
+
+			repaint();
 		}
 	}
 
