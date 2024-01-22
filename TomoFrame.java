@@ -11,8 +11,8 @@ import javax.swing.*;
 public class TomoFrame extends JFrame {
 
 	// variable declarations
-	TomoPanel panel;
-	Container c;
+	public TomoPanel panel;
+	public Container c;
 
 	// TomoFrame constructor called by Main
 	public TomoFrame() {
