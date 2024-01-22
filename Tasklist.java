@@ -63,10 +63,8 @@ public class Tasklist extends JPanel implements ActionListener {
 	public Tasklist(Container c, TomoFrame frame) {
 		// constructor of the Tasklist
 		
-		// gets the file with the saved tasks
 		file = new File("tasks.txt").getAbsoluteFile();
 		
-		// gets a trashcan icon for the delete button
 		trashIcon = new ImageIcon(new ImageIcon("trash.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH));
 
 		// gets the container and frame, in order to place things later
@@ -88,6 +86,15 @@ public class Tasklist extends JPanel implements ActionListener {
 		closeButton.setFocusable(false);
 		closeButton.setMargin(new Insets(20, 33, 21, 20));
 		closeButton.setIcon(x);
+
+		// adds a first task to the list so it doesn't start empty
+		//tasks.add(new JTextField("add more tasks!", 25));
+		
+		// adds an action listener that detects when enter is pressed in the textfield
+		//tasks.get(0).addActionListener(this);
+
+		//checkBoxs.add(new JCheckBox());
+		//deleteButtons.add(new JCheckBox());
 
 		// creates a new panel
 		panel = new JPanel();
@@ -179,7 +186,6 @@ public class Tasklist extends JPanel implements ActionListener {
 				tasks.get(i).setVisible(true);
 				checkBoxs.get(i).setVisible(true);
 				deleteButtons.get(i).setVisible(true);
-				// save the current tasks to a file
 				writeToSave();
 			} else {
 				// don't show the current task
@@ -276,17 +282,12 @@ public class Tasklist extends JPanel implements ActionListener {
 			scrollPart.revalidate();
 			
 		} else if (deleteButtons.contains(evt.getSource())) {
-			// if a delete button was pressed
 			
-			// remove the task, checkbox, and delete button
-			// correspoding to the deletebutton
 			tasks.remove(deleteButtons.indexOf(evt.getSource()));
 			checkBoxs.remove(deleteButtons.indexOf(evt.getSource()));
 			deleteButtons.remove(deleteButtons.indexOf(evt.getSource()));
 			
-			// rewrite the list to get rid of the gap
 			rewriteList();
-			// write the new list to the save file
 			writeToSave();
 			
 		}
@@ -356,47 +357,34 @@ public class Tasklist extends JPanel implements ActionListener {
 	}
 	
 	public void rewriteList() {
-		// remove the current scrollable area from the screen
 		c.remove(scrollPart);
 		
-		// create a fresh panel
 		panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		
 		gridLay.weightx = 1;
 		
-		// for every task in the array list of tasks
 		for (int i = 0; i < tasks.size(); i++) {
-			
-			// position a JCheckBox
 			gridLay.weighty = 0;
 			
 			gridLay.gridx = 0;
 			gridLay.gridy = i;
 			
-			// add it on screen
 			panel.add(checkBoxs.get(i), gridLay);
 			
-			// position a task
 			gridLay.weighty = 1;
 			
 			gridLay.gridx = 1;
 			gridLay.gridy = i;
 			
-			// add it on screen
 			panel.add(tasks.get(i), gridLay);
-			// adds an ActionListener that detects when the enter key is pressed on it
 			tasks.get(i).addActionListener(this);
 			
-			// position the delete check box
 			gridLay.gridx = 2;
 			gridLay.gridy = i;
 			
-			// add it to the screen
 			panel.add(deleteButtons.get(i), gridLay);
-			// adds an ActionListener that detects when it's checked
 			deleteButtons.get(i).addActionListener(this);
-			// sets it's icon to a trash can
 			deleteButtons.get(i).setIcon(trashIcon);
 		}
 		
@@ -428,27 +416,17 @@ public class Tasklist extends JPanel implements ActionListener {
 			
 			//while the next line has content
 			while ((str = br.readLine()) != null) {
-				// add the task with the read in content to a JTextField
-				// then add that JTextField to the array of tasks
 				tasks.add(new JTextField(str, 25));
-				
-				// creates a new JCheckBox
-				// and adds it to the array of checkboxes
 				checkBoxs.add(new JCheckBox());
 				
-				// if the next line says that the task was checked off
 				if (br.readLine().equals("true")) {
-					// check the new checkbox
 					checkBoxs.get(linesRead).setSelected(true);
 				}
-				// add a delete button to the array of delete buttons
 				deleteButtons.add(new JCheckBox());
-				
-				// increase the amount of tasks read in by 1
 				linesRead++;
 			}
 			
-			//if no tasks were in the file/the save file was empty, write a default task
+			//if the save file was empty, write a default task
 			if (linesRead == 0) {
 				
 				// adds a first task to the list so it doesn't start empty
@@ -489,8 +467,6 @@ public class Tasklist extends JPanel implements ActionListener {
 				// adds an action listener that detects when the delete task checkbox is selected
 				deleteButtons.get(0).addActionListener(this);
 			} else {
-				// if there were tasks read in
-				// add them to screen using rewriteList
 				rewriteList();
 			}
 			
@@ -501,24 +477,14 @@ public class Tasklist extends JPanel implements ActionListener {
 		}
 	}
 	
-	// a method that writes the contents of the current tasks
-	// and whether or not they've been checked
-	// into a save file
 	public void writeToSave() {
 		try {
-			// create a new bufferedWriter
-			// to write information to the file
 			bw = new BufferedWriter(new FileWriter(file));
-			// for every task in the array of tasks
 			for (int i = 0; i < tasks.size(); i++) {
-				// write down the text in the task's JTextField in one line
 				bw.write(tasks.get(i).getText() + "\n");
-				// check if it's checkbox was checked
 				if (checkBoxs.get(i).isSelected()) {
-					// if it was, write true in the next line
 					bw.write("true" + "\n");
 				} else {
-					// otherwise, write false in the next line
 					bw.write("false" + "\n");
 				}
 			}
