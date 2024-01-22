@@ -1,4 +1,4 @@
-/* Elaine Qian and Shiloh ZHeng
+/* Elaine Qian and Shiloh Zheng
  * January 17th, 2024
  * TomoPanel
  * This class creates the main program loop, constantly running the program and calling all its methods.
@@ -83,7 +83,7 @@ public class TomoPanel extends JLayeredPane implements Runnable {
 	// calls draw method in the other classes
 	public void draw(Graphics g) {
 		menu.draw(g);
-		streak.draw(g);
+		streak.draw(g, menu.menuX, menu.menuY);
 		list.draw(g);
 		timer.draw(g);
 		date.draw(g);
